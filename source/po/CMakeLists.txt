@@ -23,6 +23,13 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+############ platform-specific sed -i flag ###########
+if(APPLE)
+	set(SED_INPLACE_FLAG "-i" "''")
+else()
+	set(SED_INPLACE_FLAG "-i")
+endif()
+
 ############ pot update. ###########
 
 if(ENABLE_POT_UPDATE_TARGET)
@@ -37,8 +44,8 @@ if(ENABLE_POT_UPDATE_TARGET)
 					--files-from=${PROJECT_SOURCE_DIR}/po/POTFILES.in 
 					--output=${PROJECT_BINARY_DIR}/po/TranscriberAG.pot
 			# replace the chartype
-			COMMAND sed -i 
-				s/charset=CHARSET/charset=UTF-8/ 
+			COMMAND sed ${SED_INPLACE_FLAG}
+				s/charset=CHARSET/charset=UTF-8/
 				${PROJECT_BINARY_DIR}/po/TranscriberAG.pot
 			# Remove some header info - Need to test whether needed.
 			DEPENDS ${PROJECT_SOURCE_DIR}/po/POTFILES.in
@@ -149,6 +156,17 @@ if(ENABLE_POT_UPDATE_TARGET)
 endif(ENABLE_POT_UPDATE_TARGET)
 
 if(ENABLENLS)
+	# Copy po files from source tree to build tree so msgfmt can find them
+	foreach(LINGUA ${LINGUAS})
+		if(NOT EXISTS ${PROJECT_BINARY_DIR}/po/${LINGUA}.po)
+			configure_file(
+				${PROJECT_SOURCE_DIR}/po/${LINGUA}.po
+				${PROJECT_BINARY_DIR}/po/${LINGUA}.po
+				COPYONLY
+			)
+		endif()
+	endforeach()
+
 	set(GETTEXT_MSGFMT_PARAMETER --check-format --check-domain )
 	if(ENABLE_POT_UPDATE_TARGET)
 		# Only set the verbose flag for maintainers.

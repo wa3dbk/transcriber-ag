@@ -99,8 +99,8 @@ set	(SRC				${PROJECT_SOURCE_DIR}/src)
 #set	(GTKSPELL			${LIBS}/gtkspell-2.0.11-patch-BT)
 set	(LIVEMEDIA			${LIBS}/live555)
 
-set (SOUNDTOUCH_LIBRARY_DIRS ${PROJECT_BINARY_DIR}/libs/soundtouch-1.4.0/source/SoundTouch)
-set (SOUNDTOUCH_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/libs/soundtouch-1.4.0/include)
+set (SOUNDTOUCH_LIBRARY_DIRS ${PROJECT_BINARY_DIR}/libs/soundtouch-2.3.3/source/SoundTouch)
+set (SOUNDTOUCH_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/libs/soundtouch-2.3.3/include)
 
 set (AGLIB_LIBRARY_DIRS		${PROJECT_BINARY_DIR}/libs/aglib-2.0.1/src/ag)
 set (AGLIB_INCLUDE_DIRS		${PROJECT_SOURCE_DIR}/libs/aglib-2.0.1/src/ag)

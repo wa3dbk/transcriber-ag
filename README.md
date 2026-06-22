@@ -23,9 +23,17 @@ Start version is 2.0.0 version plus Debian patches.
     * CMake auto-detection of Homebrew and MacPorts paths
     * Clang/AppleClang compiler support with C++11 standard
     * Added missing includes (`FormatToUTF8.h`, `<fstream>`) across format parsers
-    * gettext/NLS calls guarded for builds with NLS disabled
     * Guard `g_thread_init()` for GLib >= 2.32 (no-op since 2.32)
     * Configuration directory auto-discovery (searches relative to binary, `/usr/local/etc/TransAG`, `/etc/TransAG`)
+ * **SoundTouch 1.4.0 -> 2.3.3:**
+    * Updated bundled SoundTouch library from 1.4.0 (2009) to 2.3.3
+    * Improved audio processing algorithms (interpolation: cubic, linear, Shannon)
+    * Multichannel support (up to 16 channels)
+    * Configured with integer samples (int16_t) to match existing audio pipeline
+ * **NLS (internationalization) re-enabled on macOS:**
+    * Fixed `sed -i` incompatibility between GNU sed and macOS BSD sed in pot-update target
+    * Fixed po files not being copied from source tree to build directory for `msgfmt`
+    * French and Tibetan translations now build correctly on macOS
 
 ## Build and installation
 
@@ -76,8 +84,7 @@ cmake .. \
   -DCMAKE_CXX_COMPILER=/usr/bin/c++ \
   -DGETTEXT_INCLUDE_DIR=/usr/local/opt/gettext/include \
   -DCMAKE_PREFIX_PATH="/usr/local;/opt/local" \
-  -DENABLE_POT_UPDATE_TARGET=OFF \
-  -DENABLENLS=OFF
+  -DENABLE_POT_UPDATE_TARGET=OFF
 
 make -j$(sysctl -n hw.ncpu)
 ```
@@ -99,7 +106,6 @@ sudo cp -R ../etc/TransAG /usr/local/etc/
 
 #### Known limitations on macOS
 
- * NLS (internationalization) is disabled due to macOS `sed -i` incompatibility with the po file build system
  * Requires ffmpeg@4 specifically (ffmpeg 5+/6+ have additional API breaking changes)
  * Two harmless linker warnings about missing directories may appear
 
@@ -117,12 +123,12 @@ See `README.md` in `windows` directory.
  * ~~OSX compilation~~ (done - macOS Big Sur 11.x and newer)
  * ~~remove deprecated functions in ffmpeg~~ (done - migrated to FFmpeg 4.x API)
  * ~~remove deprecated functions in gthread and glib~~ (partially done - `g_thread_init` guarded; `gdk_threads_enter/leave` still used but deeply integrated)
+ * ~~update SoundTouch (1.4 -> 1.8)~~ (done - updated to 2.3.3)
+ * ~~re-enable NLS on macOS~~ (done - fixed po file copy and macOS sed -i incompatibility)
  * debugging Windows build (almost done)
  * separate etc/, share/ and doc/ to be more Debian-compliant (and facilitate a future well-formed Debian package)
  * making Windows binaries smaller (find the good mxe options)
  * include a variable in the conf to change UI language (especially for Windows)
- * update SoundTouch (1.4 -> 1.8)
  * possibility to link against stock SoundTouch (quite difficult: Debian SoundTouch is compiled with float samples, while the code here expects int16_t...)
- * re-enable NLS on macOS (fix po file copy and macOS sed -i incompatibility)
  * support FFmpeg 5+/6+ API changes
- * gtkspellmm inclusion
+ * gtkspell integration (commented-out C API code exists in the editor; needs gtkspell2 library and careful uncommenting/testing across ~7 files)
