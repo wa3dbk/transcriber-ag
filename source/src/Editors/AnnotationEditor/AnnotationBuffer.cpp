@@ -94,7 +94,7 @@ void AnnotationBuffer::configure(AnnotationView* view)
 	m_tagPrefix["background_end"] = "background";
 
 	Glib::RefPtr<Gtk::TextTag> tag = get_tag_table()->lookup("label");
-	if (tag != 0)
+	if (tag)
 		return; // Marks & tags already created
 
 	m_backup[0] = create_mark("backup_insert0", get_insert()->get_iter(), false);
@@ -530,7 +530,7 @@ const string& AnnotationBuffer::insertAnchoredLabel(const string& type, const st
 		if (!tagname.empty())
 		{
 			const Glib::RefPtr<Gtk::TextTag>& tag = get_tag_table()->lookup(tagname);
-			if (tag != 0)
+			if (tag)
 				apply_tag(tag, prevstart, pos);
 		}
 		/* SPELL */
@@ -829,7 +829,7 @@ void AnnotationBuffer::clearHighlightTag(const Glib::RefPtr<Gtk::TextTag>& tag, 
 void AnnotationBuffer::clearTag(const string& tagname)
 {
 	const Glib::RefPtr<Gtk::TextTag>& tag = get_tag_table()->lookup(tagname);
-	if (tag != 0)
+	if (tag)
 		remove_tag(tag, begin(), end());
 }
 
@@ -851,7 +851,7 @@ void AnnotationBuffer::setHighlight(const string& type, Gtk::TextIter& pos, int 
 	const Glib::RefPtr<Gtk::TextTag>& tagHighlight = get_tag_table()->lookup(tagname);
 
 	// not highlight-able
-	if (tagHighlight == 0)
+	if (!tagHighlight)
 		return;
 
 	// already highlighted
@@ -889,7 +889,7 @@ Gtk::TextIter AnnotationBuffer::setHighlight(const string& id, int track)
 	const Glib::RefPtr<Gtk::TextTag>& tagHighlight = get_tag_table()->lookup(tagname);
 
 	// not highlight-able
-	if (tagHighlight == 0)
+	if (!tagHighlight)
 		return getCursor();
 
 	Gtk::TextIter start = m_anchors[id].getMark()->get_iter();
@@ -932,7 +932,7 @@ void AnnotationBuffer::setTag(const string& tagname, const string& type, Gtk::Te
 	INVALID( (type.empty()), "empty type ! ", type );
 
 	const Glib::RefPtr<Gtk::TextTag>& tag = get_tag_table()->lookup(tagname);
-	if (tag == 0)
+	if (!tag)
 		return; // not highlight-able
 
 	if (pos.has_tag(tag))
@@ -1223,7 +1223,7 @@ void AnnotationBuffer::insertTaggedElement(const string& id, const std::string& 
 		{
 			pos2.backward_char();
 			const Glib::RefPtr<Gtk::TextTag>& tag = iterHasTag(pos2, "qualifier", true, true);
-			if (tag != 0)
+			if (tag)
 			{
 				//				TRACE_D << "@@@@  before backward tag=" << tag ->property_name() << "  pos2=" << pos2 ;
 				pos2.backward_to_tag_toggle(tag);
@@ -1235,11 +1235,11 @@ void AnnotationBuffer::insertTaggedElement(const string& id, const std::string& 
 
 		// if other qualifiers ending at same pos -> adjust insert position
 		const Glib::RefPtr<Gtk::TextTag>& tag = iterHasTag(pos2, "qualifier", true, true);
-		if (tag != 0)
+		if (tag)
 		{
 			const Glib::RefPtr<Gtk::TextTag>& idtag = iterHasTag(pos2, m_idTagPrefix, true);
 			const Glib::RefPtr<Gtk::TextTag>& instag = get_tag_table()->lookup(id);
-			if (idtag != 0 && instag != 0)
+			if (idtag && instag)
 			{
 				Gtk::TextIter pos3 = pos2;
 				Gtk::TextIter pos4 = pos2;
@@ -1374,7 +1374,7 @@ void AnnotationBuffer::prepareElementTags(const string& id, const string& type, 
 		if (start_tag)
 		{
 			const Glib::RefPtr<Gtk::TextTag>& tag = get_tag_table()->lookup(tagname);
-			if (tag != 0)
+			if (tag)
 				tags.push_back(tag);
 				else
 				TRACE_D << "WARN : NO TAG FOR " << tagname << endl;
@@ -1383,7 +1383,7 @@ void AnnotationBuffer::prepareElementTags(const string& id, const string& type, 
 		{
 			string tmp = tagname + "_end";
 			const Glib::RefPtr<Gtk::TextTag>& tag = get_tag_table()->lookup(tmp);
-			if (tag != 0)
+			if (tag)
 				tags.push_back(tag);
 				else
 				TRACE_D << "WARN : NO TAG FOR " << tagname << endl;
@@ -1466,7 +1466,7 @@ Glib::ustring AnnotationBuffer::getTaggedElementText(const Gtk::TextIter& pos)
 {
 	const Glib::RefPtr<Gtk::TextTag>& tag = iterHasTag(pos, "qualifier", true);
 
-	if (tag == 0)
+	if (!tag)
 		return "";
 	Gtk::TextIter start = pos;
 	if (!start.begins_tag(tag))
@@ -1494,7 +1494,7 @@ string AnnotationBuffer::getTaggedElementId(const Gtk::TextIter& iter)
 	{
 		const Glib::RefPtr<Gtk::TextTag>& idtag = iterHasTag(iter, m_idTagPrefix, true);
 
-		if (idtag != 0)
+		if (idtag)
 			value = idtag->property_name().get_value();
 	}
 	return value;
@@ -1505,7 +1505,7 @@ string AnnotationBuffer::getTaggedElementId(const Gtk::TextIter& iter)
 Gtk::TextIter AnnotationBuffer::getTaggedElementIter(const string& id)
 {
 	const Glib::RefPtr<Gtk::TextTag>& tag = get_tag_table()->lookup(id);
-	if (tag != 0)
+	if (tag)
 	{
 		Gtk::TextIter start = begin();
 		if (!start.begins_tag(tag))
@@ -1739,7 +1739,7 @@ void AnnotationBuffer::deleteTaggedElement(const string& id)
 	bool connectionState = blockLeftGravityConnection(true);
 	const Glib::RefPtr<Gtk::TextTag>& tag = get_tag_table()->lookup(id);
 
-	if (tag != 0)
+	if (tag)
 	{
 		//> change anchor for annotation in order to permit good
 		//  undo/redo actions
@@ -1803,7 +1803,7 @@ void AnnotationBuffer::deletePixElement(const string& id)
 
 	Glib::RefPtr<Gtk::TextMark> mymark;
 
-	if (tag != 0)
+	if (tag)
 	{
 
 		Gtk::TextIter start = begin();
@@ -1870,7 +1870,7 @@ void AnnotationBuffer::setAnchoredLabel(const std::string& id, const std::string
 		Glib::RefPtr<Gtk::TextTag> tag = iterHasTag(start, m_tagPrefix[anchor->getType()], true);
 		Glib::RefPtr<Gtk::TextTag> tracktag = iterHasTag(start, "track", true);
 
-		INVALID ( (tag == 0 ), " no tag for type ", anchor->getType());
+		INVALID ( (!tag), " no tag for type ", anchor->getType());
 
 		// skip eventual "label-only" prefix.
 		bool ok = true;
@@ -1901,7 +1901,7 @@ void AnnotationBuffer::setAnchoredLabel(const std::string& id, const std::string
 		list<Glib::RefPtr<Gtk::TextTag> > tags;
 		tags.push_back(get_tag_table()->lookup(tagname));
 		//		tags.push_back(m_labelTag);
-		if (tracktag != 0)
+		if (tracktag)
 			tags.push_back(tracktag);
 		/* SPELL */
 		//		if ( m_nospellTag != 0 )
@@ -2221,7 +2221,7 @@ Glib::ustring AnnotationBuffer::getAnchoredLabel(const string& id)
 			while ( !done )
 			{
 				const Glib::RefPtr<Gtk::TextTag>& tag = iterHasTag(start,m_tagPrefix[anchor->getType()], true);
-				if ( tag !=0 )
+				if ( tag )
 				{
 					Gtk::TextIter stop = start;
 					stop.forward_char();
@@ -2328,7 +2328,7 @@ Glib::ustring AnnotationBuffer::getSegmentText(const string& id, const string& e
 				else
 				{
 					const Glib::RefPtr<Gtk::TextTag>& tag = iterHasTag(start_pos, m_tagPrefix[start->getType()], true, false, true);
-					if ( tag != 0 && go_on )
+					if ( tag && go_on )
 					{
 						// -- If we have already found a matching tag, it means we have already seen the id we're searching.
 						//    So the second time we find a tag of same type, we must be at next element, so we should stop there
@@ -2554,7 +2554,7 @@ vector<string> AnnotationBuffer::getIds(const Gtk::TextIter& start, const Gtk::T
 	{
 		Glib::RefPtr<Gtk::TextTag> tag = iterHasTag(iter, prefix, true);
 		classtag = getActiveTagClass(iter);
-		if ( tag != 0 /*&& (!m_view->getDataModel().isMainstreamType(classtag) || with_anchored )*/)
+		if ( tag /*&& (!m_view->getDataModel().isMainstreamType(classtag) || with_anchored )*/)
 		{
 			ids.push_back(tag->property_name().get_value());
 			iter.forward_to_tag_toggle(tag);
@@ -2652,7 +2652,7 @@ void AnnotationBuffer::setTrackTag(const string& id, int notrack)
 	{
 		const Gtk::TextIter& it1= getAnchoredIter(id);
 		const Glib::RefPtr<Gtk::TextTag>& tag = iterHasTag(it1, "track", true);
-		if ( tag != 0 )
+		if ( tag )
 		{
 			Gtk::TextIter it2 = it1;
 			it2.forward_to_tag_toggle(tag);
@@ -3274,7 +3274,7 @@ void AnnotationBuffer::setEditable(const Gtk::TextIter& iter, bool editable)
 		apply_tag(m_editableTag, iter, next);
 		//		remove_tag(m_labelTag, iter, next);
 	}
-	else if ( _tmpEditMark != 0 )
+	else if ( _tmpEditMark )
 	{
 		Gtk::TextIter next = _tmpEditMark->get_iter();
 		next.forward_char();

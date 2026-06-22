@@ -37,6 +37,9 @@
 
 #else
 
+#ifndef GETTEXT_PACKAGE
+#define GETTEXT_PACKAGE "TranscriberAG"
+#endif
 #define _(a) a
 
 #endif /* ENABLE_NLS */

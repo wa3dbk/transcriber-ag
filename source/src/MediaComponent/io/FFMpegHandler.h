@@ -21,6 +21,7 @@ extern "C"
 	#include <libavcodec/avcodec.h>
 	#include <libavformat/avformat.h>
 	#include <libswscale/swscale.h>
+	#include <libavutil/imgutils.h>
 }
 
 #include <glib.h>
@@ -166,22 +167,22 @@ public:
 	 * Accessor for decoder
 	 * @return Decoder instance
 	 */
-	AVCodec*		getDecoder()	{ return decoder; }
+	const AVCodec*	getDecoder()	{ return decoder; }
 
 	/**
 	 * Accessor for encoder
 	 * @return Encoder instance
 	 */
-	AVCodec*		getEncoder()	{ return encoder; }
+	const AVCodec*	getEncoder()	{ return encoder; }
 
 
 private:
 	// -- FFmpeg --
 	AVFormatContext	*formatCtx;
 	AVCodecContext	*encoderCtx,	*decoderCtx;
-	AVCodec			*encoder,		*decoder;
+	const AVCodec	*encoder,		*decoder;
 	AVFrame			*o_frame,		*i_frame, *s_frame;
-	uint8_t			encBuf[FF_MIN_BUFFER_SIZE];
+	uint8_t			encBuf[AV_INPUT_BUFFER_MIN_SIZE];
 	uint8_t			*o_data;
 	int				o_size;
 	int				base_frame_size;

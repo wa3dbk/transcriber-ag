@@ -651,7 +651,7 @@ void Anchor::setLeftGravity(bool left_gravity)
 	if ( left_gravity != m_mark->get_left_gravity() )
 	{
 		Glib::RefPtr<Gtk::TextBuffer> buffer = m_mark->get_buffer();
-		if ( buffer != 0 ) {
+		if ( buffer ) {
 			const Gtk::TextIter& pos = m_mark->get_iter();
 			string id = m_mark->get_name();
 			buffer->delete_mark(m_mark);

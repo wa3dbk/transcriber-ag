@@ -13,10 +13,12 @@
 #include <ag/AGAPI.h>
 #include <xercesc/sax/SAXException.hpp>
 #include <xercesc/util/UTFDataFormatException.hpp>
+#include <fstream>
 #include "SGML.h"
 #include "SAX_SGMLHandler.h"
 #include "agfXercesUtils.h"
 #include "Common/iso639.h"
+#include "Common/util/FormatToUTF8.h"
 #include "Common/util/FormatTime.h"
 #include "Common/util/Utils.h"
 #include "Common/util/StringOps.h"

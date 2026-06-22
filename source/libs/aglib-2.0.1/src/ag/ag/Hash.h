@@ -12,25 +12,17 @@
 
 
 #include <string>
+#include <functional>
+#include <unordered_map>
+#include <unordered_set>
 using namespace std;
 
-/* (( BT Patch -- */
-#if (__GNUC__ >= 3)
-/* -- BT Patch )) */
-#include <ext/hash_map>
-#include <ext/hash_set>
-/* (( BT Patch -- */
-  #if (__GNUC__ > 3 || __GNUC_MINOR__ >= 1)
-/* -- BT Patch )) */
-  using namespace __gnu_cxx;
-  #endif
-#else
-#include <hash_map>
-#include <hash_set>
-/* (( BT Patch -- */
-  using namespace __gnu_cxx;
-/* -- BT Patch )) */
-#endif
+// Provide hash_map/hash_set as aliases for unordered_map/unordered_set
+template<class Key, class Value, class HashFn = std::hash<Key>, class EqualFn = std::equal_to<Key>>
+using hash_map = std::unordered_map<Key, Value, HashFn, EqualFn>;
+
+template<class Key, class HashFn = std::hash<Key>, class EqualFn = std::equal_to<Key>>
+using hash_set = std::unordered_set<Key, HashFn, EqualFn>;
 
 /// Function to test string equivalence.
 class StringEqual
@@ -48,8 +40,8 @@ class hashString
  public:
   size_t operator()(string const &str) const
     {
-      hash<char const *> h;
-      return (h(str.c_str()));
+      std::hash<string> h;
+      return h(str);
     }
 };
 
@@ -72,8 +64,8 @@ class hashStringPair
  public:
   size_t operator()(pair<string,string> const &sp) const
     {
-      hash<char const *> h;
-      return (h((sp.first+sp.second).c_str()));
+      std::hash<string> h;
+      return h(sp.first + sp.second);
     }
 };
 

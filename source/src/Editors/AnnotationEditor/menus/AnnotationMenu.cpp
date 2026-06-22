@@ -54,7 +54,7 @@ void AnnotationMenu::popup(const Gtk::TextIter& iter, int x, int y, guint32 even
 void AnnotationMenu::setIter(const Gtk::TextIter& iter)
 {
 	m_textIter = iter;
-	if ( m_popupMark == 0 )
+	if ( !m_popupMark )
 		m_popupMark = iter.get_buffer()->create_mark(iter);
 	else iter.get_buffer()->move_mark(m_popupMark, iter);
 }

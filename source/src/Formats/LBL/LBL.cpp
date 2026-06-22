@@ -22,6 +22,7 @@
 #include "Common/util/StringOps.h"
 #include "DataModel/speakers/Speaker.h"
 #include "Common/FileInfo.h"
+#include "Common/util/FormatToUTF8.h"
 #include "Common/iso639.h"
 #include "Common/globals.h"
 

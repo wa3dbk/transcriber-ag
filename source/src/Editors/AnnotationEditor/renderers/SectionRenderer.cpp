@@ -32,7 +32,7 @@ SectionRenderer::SectionRenderer (AnnotationView* view)
 void SectionRenderer::configure()
 {
 	const Glib::RefPtr<Gtk::TextTag>& tag= AnnotationRenderer::configure();
-	if ( tag == 0 ) TRACE_D << "NULL TAG !!" << endl;
+	if ( !tag ) TRACE_D << "NULL TAG !!" << endl;
 	tag->property_justification().set_value(Gtk::JUSTIFY_CENTER);
 }
 

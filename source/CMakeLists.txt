@@ -14,6 +14,21 @@ project					(TranscriberAG)
 find_package			(PkgConfig	REQUIRED)
 # modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/")
+
+# --- Help find gettext/libintl on macOS (Homebrew keg-only) ---
+if (APPLE)
+    execute_process(
+        COMMAND brew --prefix gettext
+        OUTPUT_VARIABLE GETTEXT_PREFIX
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        ERROR_QUIET
+    )
+    if (GETTEXT_PREFIX)
+        set(GETTEXT_SEARCH_PATH "${GETTEXT_PREFIX}")
+        list(APPEND CMAKE_PREFIX_PATH "${GETTEXT_PREFIX}")
+    endif()
+endif()
+
 find_package			(Gettext	REQUIRED)
 
 # -----------------------
@@ -96,11 +111,28 @@ set (LIVEMEDIA_INCLUDE_DIRS		${PROJECT_SOURCE_DIR}/libs/live555/liveMedia/includ
 # --- Recent distributions need this ---
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__STDC_CONSTANT_MACROS")
 
+# --- Ensure C++11 on all compilers ---
+if(NOT MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+endif()
+
 find_package(FFMPEG	REQUIRED)
 
 # -- Global Includes --
 
-include_directories(${PROJECT_BINARY_DIR}/include/ ${PROJECT_SOURCE_DIR}/include/)
+include_directories(
+	${PROJECT_BINARY_DIR}/include/
+	${PROJECT_SOURCE_DIR}/include/
+	${XERCES_INCLUDE_DIRS}
+	${GLIBMM_INCLUDE_DIRS}
+	${GTKMM_INCLUDE_DIRS}
+)
+
+link_directories(
+	${XERCES_LIBRARY_DIRS}
+	${GLIBMM_LIBRARY_DIRS}
+	${GTKMM_LIBRARY_DIRS}
+)
 
 # --- Win32 Settings ---
 #
@@ -191,10 +223,26 @@ endif (WIN32 AND NOT MINGW)
 
 # --- MacOSX Settings ---
 if (APPLE)
-	#set (BASE_DIR	/Users/ferry/gtk/inst)
-	set (BASE_DIR /opt/local)
+	# Detect Homebrew prefix (works on both Intel and Apple Silicon)
+	execute_process(
+		COMMAND brew --prefix
+		OUTPUT_VARIABLE HOMEBREW_PREFIX
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+		ERROR_QUIET
+	)
+	if (HOMEBREW_PREFIX)
+		set (BASE_DIR ${HOMEBREW_PREFIX})
+	elseif (EXISTS /opt/local/lib)
+		set (BASE_DIR /opt/local)
+	else()
+		set (BASE_DIR /usr/local)
+	endif()
 
+	# Use pkg-config include/link dirs when available (set by the UNIX block above),
+	# plus fallback paths for headers that pkg-config may miss on macOS.
 	include_directories(
+		${GTKMM_INCLUDE_DIRS}
+		${GLIBMM_INCLUDE_DIRS}
 		${BASE_DIR}/include
 		${BASE_DIR}/include/gtk-2.0
 		${BASE_DIR}/include/glib-2.0
@@ -217,15 +265,13 @@ if (APPLE)
 		${BASE_DIR}/lib/gtk-2.0/include
 		${BASE_DIR}/lib/sigc++-2.0/include
 		${BASE_DIR}/lib/glib-2.0/include
-		/opt/local/include
-		/sw/include
 	)
 
 	link_directories(
+		${GTKMM_LIBRARY_DIRS}
+		${GLIBMM_LIBRARY_DIRS}
 		${BASE_DIR}/lib
-		/opt/local/lib
-		/sw/lib
-	)	
+	)
 
 	# -- Libraries --
 	set(GTKMM_LINK_LIBRARIES
@@ -236,7 +282,7 @@ if (APPLE)
 		atkmm-1.6
 		pangomm-1.4
 		cairomm-1.0
-	
+
 		intl
 		atk-1.0
 		sigc-2.0
@@ -251,6 +297,9 @@ if (APPLE)
 
 	# -- Install --
 	set(CMAKE_INSTALL_PREFIX	/usr/local)
+
+	# -- RPATH settings for macOS --
+	set(CMAKE_MACOSX_RPATH ON)
 
 endif (APPLE)
 

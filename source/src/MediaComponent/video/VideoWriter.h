@@ -15,7 +15,7 @@
 #include "base/Guesser.h"
 
 #define STREAM_FRAME_RATE 25 /* 25 images/s */
-#define STREAM_PIX_FMT PIX_FMT_RGB24 /* default pix_fmt */
+#define STREAM_PIX_FMT AV_PIX_FMT_RGB24 /* default pix_fmt */
 
 
 using namespace std;
@@ -95,15 +95,15 @@ class VideoWriter
 		IODevice* device;
 
 		// -- Video --
-		AVOutputFormat*		outFormat;
+		const AVOutputFormat*	outFormat;
 		AVFormatContext*	formatCtx;
 		AVStream*			video_st;
 		double				video_pts;
 
+		AVCodecContext*		codecCtx;
 		AVFrame *picture, *tmp_picture;
 		uint8_t *video_outbuf;
 		int frame_count, video_outbuf_size;
 };
 
 #endif
-

@@ -7,6 +7,7 @@
 /********************************************************************************/
 #include "Explorer_utils.h"
 #include "Common/util/Utils.h"
+#include "Common/util/FormatToUTF8.h"
 #include "Common/icons/Icons.h"
 #include "Common/Explorer_filter.h"
 #include "Common/FileInfo.h"

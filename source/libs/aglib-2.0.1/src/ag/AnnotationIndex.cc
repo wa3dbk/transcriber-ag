@@ -10,11 +10,11 @@
 
 
 AnnotationIndex::AnnotationIndex() {
-  byId.resize(500);
-  anchorById.resize(1000);
-  byFeature.resize(1000);
-  incoming.resize(1000);
-  outgoing.resize(1000);
+  byId.rehash(500);
+  anchorById.rehash(1000);
+  byFeature.rehash(1000);
+  incoming.rehash(1000);
+  outgoing.rehash(1000);
 }
 
 AnnotationIndex::~AnnotationIndex() {

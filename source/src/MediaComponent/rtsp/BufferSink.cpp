@@ -207,27 +207,27 @@ void BufferSink::setAudioSettings(int i_payload, char* i_codec, int i_channels, 
 	switch(sink_rtp_payload)
 	{
 		case 0:		// PCM-Mulaw
-			ffmpeg_codec_id = CODEC_ID_PCM_MULAW;
+			ffmpeg_codec_id = AV_CODEC_ID_PCM_MULAW;
 			break;
 
 		case 10:	// Uncompressed PCM-Stereo
-			ffmpeg_codec_id	= CODEC_ID_PCM_S16BE;
+			ffmpeg_codec_id	= AV_CODEC_ID_PCM_S16BE;
 			break;
 
 		case 11:	// Uncompressed PCM-Mono
-			ffmpeg_codec_id	= CODEC_ID_PCM_S16BE;
+			ffmpeg_codec_id	= AV_CODEC_ID_PCM_S16BE;
 			break;
 
 		case 14:	// Mpeg-Audio (default : stereo@44.1Khz)
-			ffmpeg_codec_id		= CODEC_ID_MP3;
+			ffmpeg_codec_id		= AV_CODEC_ID_MP3;
 
 			// -- Other parameters will be guessed by FFmpeg decoder itself,
-			// -- parsing MP3 frames header	
+			// -- parsing MP3 frames header
 
 			break;
 
 		default:
-			ffmpeg_codec_id	= CODEC_ID_PCM_S16BE;
+			ffmpeg_codec_id	= AV_CODEC_ID_PCM_S16BE;
 	}
 
 	// -- Filling MediumInfo Structure --

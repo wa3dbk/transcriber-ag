@@ -2448,7 +2448,7 @@ void AnnotationView::setSection (const Gtk::TextIter& iter, string seg_type, str
 
 std::string AnnotationView::getCurrentTaggedElement(const Gtk::TextIter& iter, const string& type)
 {
-	bool tag = getBuffer()->iterHasTag(iter, type, true) ;
+	Glib::RefPtr<Gtk::TextTag> tag = getBuffer()->iterHasTag(iter, type, true) ;
 
 	if (!tag)
 		return "" ;
@@ -2680,7 +2680,7 @@ void AnnotationView::setQualifier(const Gtk::TextIter& iter, std::string type, s
 	bool can_upd = false;
 
 	Glib::RefPtr<Gtk::TextTag> tag =  getBuffer()->iterHasTag(iter, m_dataModel.getAGTrans(), true);
-	can_upd = ( tag != 0 && !iter.begins_tag(tag) ) ;
+	can_upd = ( tag && !iter.begins_tag(tag) ) ;
 
 	start = iter;
 	has_sel = getBuffer()->getSelectedRange(iter, start, stop, true);
@@ -3223,7 +3223,7 @@ bool AnnotationView::popupAnnotationMenu(const string& type, const Gtk::TextIter
 			buffer_to_window_coords(Gtk::TEXT_WINDOW_TEXT, location.get_x(), location.get_y(), m_popup_x, m_popup_y);
 
 			Glib::RefPtr<Gdk::Window> win = get_window(Gtk::TEXT_WINDOW_TEXT);
-			if ( win != 0 )
+			if ( win )
 				window = win->gobj();
 			else if ( event !=  NULL )
 				window =  ((GdkEventKey*)event)->window;

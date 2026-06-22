@@ -61,7 +61,9 @@ int main(int argc, char *argv[])
 	Glib::ustring transag_dir			= "/usr/local/etc/TransAG";
 
 	//> -- Prepare domain
+#if ENABLE_NLS
 	bindtextdomain(GETTEXT_PACKAGE, (transag_dir + "/locales").c_str());
+#endif
 
 	// -- Theme --
 	Glib::ustring icon_dir  			= transag_dir + "/icons";

@@ -37,11 +37,7 @@
 	#include <unistd.h>
 	#include <ctype.h>
 	#include <wchar.h>
-	#include <AppleEvents.h>
-	#ifdef __MACH__
-		#include <AEMach.h>
-	#endif
-	#include <MacErrors.h>
+	#include <Carbon/Carbon.h>
 	#define xwin 0
 	#define win 0
 	#define mac 1

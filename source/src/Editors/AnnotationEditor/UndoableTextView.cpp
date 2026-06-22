@@ -951,7 +951,7 @@ Glib::RefPtr<Gtk::TextTag> TagAction::getTag(Glib::RefPtr<tag::AnnotationBuffer>
 		undoMode = "REDO";
 
 	// tag is not in tagtable
-	if (exist == 0)
+	if (!exist)
 	{
 		if (DOTRACE_UNDOV)
 		{
@@ -1391,7 +1391,7 @@ void MarkAction::undo(Glib::RefPtr<tag::AnnotationBuffer>& buffer) // IN:
 	else if (m_markActionType == 0)
 	{
 		const Glib::RefPtr<Gtk::TextMark>& mark = buffer->get_mark(m_mark);
-		if (mark == 0)
+		if (!mark)
 		{
 			if (DOTRACE_UNDOV)
 				TRACE_D << "\n ||| MarkAction UNDO delete: " << getData() << endl;
@@ -1410,7 +1410,7 @@ void MarkAction::undo(Glib::RefPtr<tag::AnnotationBuffer>& buffer) // IN:
 		if (DOTRACE_UNDOV)
 			TRACE_D << "\n ||| MarkAction UNDO move: " << getData() << endl;
 		const Glib::RefPtr<Gtk::TextMark>& mark = buffer->get_mark(m_mark);
-		if (m_oldpos != -1 && mark != 0)
+		if (m_oldpos != -1 && mark)
 			buffer->move_mark(mark, buffer->get_iter_at_offset(m_oldpos));
 	}
 
@@ -1460,7 +1460,7 @@ void MarkAction::redo(Glib::RefPtr<tag::AnnotationBuffer>& buffer) // IN:
 		if (DOTRACE_UNDOV)
 			TRACE_D << "\n ||| MarkAction REDO delete: " << getData() << endl;
 		const Glib::RefPtr<Gtk::TextMark>& mark = buffer->get_mark(m_mark);
-		if (mark != 0)
+		if (mark)
 			buffer->move_mark(mark, buffer->get_iter_at_offset(m_pos));
 	}
 

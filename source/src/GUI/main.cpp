@@ -188,13 +188,15 @@ int main(int argc, char *argv[])
 	{
 		//> -- Prepare domain
 		setlocale(LC_ALL,"");
+#if ENABLE_NLS
 		bindtextdomain(GETTEXT_PACKAGE, (defaultLocale_path).c_str());
 		bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
         textdomain (GETTEXT_PACKAGE);
-		
+
 		#ifdef __APPLE__
 		bindtextdomain("gtk20", (defaultLocale_path).c_str());
 		#endif
+#endif
 
 		//> -- Load Default Parameters
 		try

@@ -65,7 +65,6 @@ bool FFMpegHandler::m_init()
 		USLEEP(10*1000);
 	}
 
-	av_register_all();
 	av_log_set_level(AV_LOG_QUIET);
 
 	g_mutex_unlock(mutex);
@@ -96,7 +95,7 @@ bool FFMpegHandler::m_open(const char *inMedium, int)
 	// Step 2 - Storing Streams Indexes
 	for(unsigned int i=0; i<formatCtx->nb_streams; i++)
 	{
-		switch( formatCtx->streams[i]->codec->codec_type )
+		switch( formatCtx->streams[i]->codecpar->codec_type )
 		{
 			case AVMEDIA_TYPE_VIDEO:
 				v_streams.push_back(i);
@@ -123,7 +122,8 @@ bool FFMpegHandler::m_open(const char *inMedium, int)
 			if (a_streams.empty())
 				return false;
 
-			decoderCtx = formatCtx->streams[a_streams.at(0)]->codec;
+			decoderCtx = avcodec_alloc_context3(NULL);
+			avcodec_parameters_to_context(decoderCtx, formatCtx->streams[a_streams.at(0)]->codecpar);
 			initDecoder(decoderCtx->codec_id);
 			
 			tFrame = m_read();
@@ -135,7 +135,8 @@ bool FFMpegHandler::m_open(const char *inMedium, int)
 			if (v_streams.empty())
 				return false;
 
-			decoderCtx = formatCtx->streams[v_streams.at(0)]->codec;
+			decoderCtx = avcodec_alloc_context3(NULL);
+			avcodec_parameters_to_context(decoderCtx, formatCtx->streams[v_streams.at(0)]->codecpar);
 			initDecoder(decoderCtx->codec_id);
 			
 			while(time_base == 0.0)
@@ -231,9 +232,9 @@ bool FFMpegHandler::initDecoder(AVCodecID codec_id, bool allocate)
 		return false;
 	}
 
-	i_frame = avcodec_alloc_frame();
-	o_frame	= avcodec_alloc_frame();
-	s_frame	= avcodec_alloc_frame();
+	i_frame = av_frame_alloc();
+	o_frame	= av_frame_alloc();
+	s_frame	= av_frame_alloc();
 	o_size	= -1;
 
 	return true;
@@ -261,33 +262,52 @@ void FFMpegHandler::initFrame()
 // --- Decode ---
 MediumFrame* FFMpegHandler::decode(uint8_t *buf, int buf_len)
 {
-	int bytes = -1;
+	int ret;
 
 	switch(av_ctx)
 	{
 		case AudioCtx:
-			frame->len	= MAX_AUDIO_FRAME_SIZE;
+		{
+			frame->len = MAX_AUDIO_FRAME_SIZE;
 			AVPacket avpacket;
+			av_init_packet(&avpacket);
 			avpacket.size = buf_len;
 			avpacket.data = buf;
-			bytes		= avcodec_decode_audio3(decoderCtx, frame->samples, &frame->len, &avpacket);
+
+			ret = avcodec_send_packet(decoderCtx, &avpacket);
+			if (ret < 0)
+			{
+				fprintf(stderr, "FFMpegHandler --> Send packet failed\n");
+				return NULL;
+			}
+
+			AVFrame *decoded_frame = av_frame_alloc();
+			ret = avcodec_receive_frame(decoderCtx, decoded_frame);
+			if (ret < 0)
+			{
+				av_frame_free(&decoded_frame);
+				fprintf(stderr, "FFMpegHandler --> Decoding Failed, NULL Frame Returned\n");
+				return NULL;
+			}
+
+			int data_size = av_samples_get_buffer_size(NULL, decoderCtx->channels,
+			                                            decoded_frame->nb_samples,
+			                                            decoderCtx->sample_fmt, 1);
+			memcpy(frame->samples, decoded_frame->data[0], data_size);
+			frame->len = data_size;
 
 			if (m_info()->audio_channels)
 				frame->len /= m_info()->audio_channels;
 
+			av_frame_free(&decoded_frame);
 			break;
+		}
 
 		case VideoCtx:
 			break;
 
 		default:
 			break;
-	}
-
-	if (bytes <= 0)
-	{
-		fprintf(stderr, "FFMpegHandler --> Decoding Failed, NULL Frame Returned\n");
-		return NULL;
 	}
 
 	return frame;
@@ -297,7 +317,7 @@ MediumFrame* FFMpegHandler::decode(uint8_t *buf, int buf_len)
 // --- DecodeMulti ---
 vector<MediumFrame*> FFMpegHandler::decodeMulti(uint8_t* buf, int buf_len)
 {
-	int bytes = 0;
+	int ret = 0;
 	int toDecode = buf_len;
 	vector<MediumFrame*> frames;
 
@@ -307,23 +327,42 @@ vector<MediumFrame*> FFMpegHandler::decodeMulti(uint8_t* buf, int buf_len)
 			while(toDecode > 0)
 			{
 				MediumFrame* f = new MediumFrame;
-
-				f->samples	= new int16_t[MAX_AUDIO_FRAME_SIZE];
-				f->len		= MAX_AUDIO_FRAME_SIZE;
+				f->samples = new int16_t[MAX_AUDIO_FRAME_SIZE];
+				f->len = MAX_AUDIO_FRAME_SIZE;
 				AVPacket avpacket;
+				av_init_packet(&avpacket);
 				avpacket.data = buf;
 				avpacket.size = toDecode;
-				bytes		= avcodec_decode_audio3(decoderCtx, f->samples, &f->len, &avpacket);
 
-				buf += bytes;
-				toDecode -= bytes;
-					
-				if (bytes < 0)
+				ret = avcodec_send_packet(decoderCtx, &avpacket);
+				if (ret < 0)
 				{
 					fprintf(stderr, "FFMpegHandler --> Decoding Failed, NULL Frame Returned\n");
+					delete[] f->samples;
+					delete f;
 					return frames;
 				}
 
+				AVFrame *decoded_frame = av_frame_alloc();
+				ret = avcodec_receive_frame(decoderCtx, decoded_frame);
+				if (ret < 0)
+				{
+					av_frame_free(&decoded_frame);
+					delete[] f->samples;
+					delete f;
+					break;
+				}
+
+				int data_size = av_samples_get_buffer_size(NULL, decoderCtx->channels,
+				                                            decoded_frame->nb_samples,
+				                                            decoderCtx->sample_fmt, 1);
+				memcpy(f->samples, decoded_frame->data[0], data_size);
+				f->len = data_size;
+
+				buf += avpacket.size;
+				toDecode -= avpacket.size;
+
+				av_frame_free(&decoded_frame);
 				frames.push_back(f);
 			}
 
@@ -344,13 +383,35 @@ vector<MediumFrame*> FFMpegHandler::decodeMulti(uint8_t* buf, int buf_len)
 // --- Encode ---
 MediumFrame* FFMpegHandler::encode(uint8_t* buf, int buf_len)
 {
-	frame->len = FF_MIN_BUFFER_SIZE;
-	int err = avcodec_encode_audio(encoderCtx, encBuf, buf_len, (const short int*)buf);
+	frame->len = AV_INPUT_BUFFER_MIN_SIZE;
 
-	if (err < 0)
+	AVFrame *enc_frame = av_frame_alloc();
+	enc_frame->nb_samples = encoderCtx->frame_size;
+	enc_frame->format = encoderCtx->sample_fmt;
+	enc_frame->channel_layout = encoderCtx->channel_layout;
+	av_frame_get_buffer(enc_frame, 0);
+	memcpy(enc_frame->data[0], buf, buf_len);
+
+	int ret = avcodec_send_frame(encoderCtx, enc_frame);
+	av_frame_free(&enc_frame);
+
+	if (ret < 0)
 		return NULL;
 
+	AVPacket pkt;
+	av_init_packet(&pkt);
+	pkt.data = NULL;
+	pkt.size = 0;
+
+	ret = avcodec_receive_packet(encoderCtx, &pkt);
+	if (ret < 0)
+		return NULL;
+
+	memcpy(encBuf, pkt.data, pkt.size);
+	frame->len = pkt.size;
 	frame->samples = (int16_t*)encBuf;
+
+	av_packet_unref(&pkt);
 	return frame;
 }
 
@@ -396,7 +457,7 @@ MediumFrame* FFMpegHandler::m_read()
 							frame_ok	= true;
 						}
 
-						av_free_packet(&pkt);
+						av_packet_unref(&pkt);
 					}
 				}
 				else
@@ -473,7 +534,7 @@ MediumFrame* FFMpegHandler::m_next_frame()
 {
 	AVPacket	pkt;
 	int			err;
-	int			bytes;
+	int			ret;
 	int			frame_ok = 0;
 	double		dts_shift;
 	double		pts;
@@ -505,14 +566,27 @@ MediumFrame* FFMpegHandler::m_next_frame()
 		{
 			if (pkt.stream_index == v_streams.at(0))
 			{
-        		decoderCtx->reordered_opaque= pkt.pts;
-		        bytes = avcodec_decode_video2(decoderCtx,
-                                       		 i_frame, &frame_ok,
-		                                     &pkt);
+        		decoderCtx->reordered_opaque = pkt.pts;
+				ret = avcodec_send_packet(decoderCtx, &pkt);
+				if (ret < 0)
+				{
+					fprintf(stderr, "FFMpegHandler --> Unable to send packet\n");
+					av_packet_unref(&pkt);
+					return NULL;
+				}
 
-				if (bytes <= 0)
+				ret = avcodec_receive_frame(decoderCtx, i_frame);
+				if (ret == 0)
+					frame_ok = 1;
+				else if (ret == AVERROR(EAGAIN))
+				{
+					av_packet_unref(&pkt);
+					continue;
+				}
+				else
 				{
 					fprintf(stderr, "FFMpegHandler --> Unable to decode packet\n");
+					av_packet_unref(&pkt);
 					return NULL;
 				}
 
@@ -529,7 +603,7 @@ MediumFrame* FFMpegHandler::m_next_frame()
 				current_pts = pts;
 				current_dts = pts;
 
-				av_free_packet(&pkt);
+				av_packet_unref(&pkt);
 			}
 		}
 		else
@@ -892,7 +966,7 @@ bool FFMpegHandler::m_set_dimensions(int in_w, int in_h)
                                  decoderCtx->pix_fmt,
                                  v_width,
                                  v_height,
-                                 PIX_FMT_RGB24,
+                                 AV_PIX_FMT_RGB24,
                                  SWS_FAST_BILINEAR,
                                  NULL, NULL, NULL);
 
@@ -913,19 +987,18 @@ bool FFMpegHandler::m_set_dimensions(int in_w, int in_h)
     }
 
     // -- Buffers Allocation --
-    o_size = avpicture_get_size(PIX_FMT_RGB24,
-                                v_width,
-                                v_height);
+    o_size = av_image_get_buffer_size(AV_PIX_FMT_RGB24,
+                                      v_width,
+                                      v_height, 1);
 
-    o_frame = avcodec_alloc_frame();
+    o_frame = av_frame_alloc();
     o_data  = new uint8_t[o_size];
 
     // -- Output Frame Allocation --
-    avpicture_fill( reinterpret_cast<AVPicture*>(o_frame),
-                    o_data,
-                    PIX_FMT_RGB24,
-                    v_width,
-                    v_height);
+    av_image_fill_arrays(o_frame->data, o_frame->linesize,
+                         o_data,
+                         AV_PIX_FMT_RGB24,
+                         v_width, v_height, 1);
 
 	return true;
 }
@@ -968,7 +1041,7 @@ bool FFMpegHandler::initScalers()
 								 decoderCtx->pix_fmt,
 								 m_info()->video_width,
 								 m_info()->video_height,
-								 PIX_FMT_RGB24,
+								 AV_PIX_FMT_RGB24,
 								 SWS_FAST_BILINEAR,
 								 NULL, NULL, NULL );
 
@@ -980,19 +1053,18 @@ bool FFMpegHandler::initScalers()
 
 	
 	// -- Buffers Allocation --
-	o_size = avpicture_get_size(PIX_FMT_RGB24,
-								m_info()->video_width,
-								m_info()->video_height);
+	o_size = av_image_get_buffer_size(AV_PIX_FMT_RGB24,
+	                                   m_info()->video_width,
+	                                   m_info()->video_height, 1);
 
-	o_frame	= avcodec_alloc_frame();
+	o_frame	= av_frame_alloc();
 	o_data	= new uint8_t[o_size];
 
 	// -- RGB Frame Allocation --
-	avpicture_fill( reinterpret_cast<AVPicture*>(o_frame),
-					o_data,
-					PIX_FMT_RGB24,
-					m_info()->video_width,
-					m_info()->video_height);
+	av_image_fill_arrays(o_frame->data, o_frame->linesize,
+	                     o_data,
+	                     AV_PIX_FMT_RGB24,
+	                     m_info()->video_width, m_info()->video_height, 1);
 
 	return true;
 }
@@ -1019,7 +1091,7 @@ FFMpegHandler::convertToRGB()
 	frame->ts			= current_ts;
 	frame->v_width		= v_width;
 	frame->v_height		= v_height;
-	frame->vlen			= avpicture_get_size(PIX_FMT_RGB24, v_width, v_height);
+	frame->vlen			= av_image_get_buffer_size(AV_PIX_FMT_RGB24, v_width, v_height, 1);
 
 	return frame;
 }

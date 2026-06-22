@@ -12,6 +12,7 @@
 
 
 #include <sstream>
+#include <fstream>
 #include <ag/AGException.h>
 #include <ag/RE.h>
 #include <ag/AGAPI.h>

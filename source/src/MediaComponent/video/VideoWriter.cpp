@@ -12,8 +12,7 @@
 VideoWriter::VideoWriter(string inPath, int inWidth, int inHeight, int inStep)
 	: sourcePath(inPath), outWidth(inWidth), outHeight(inHeight), frameStep(inStep)
 {
-	av_register_all();
-	avcodec_register_all();
+	codecCtx = NULL;
 }
 
 
@@ -49,7 +48,7 @@ VideoWriter::generateVideo()
 		printf("Format Guess Fallback : mpeg\n");
 		outFormat = av_guess_format("mpeg", NULL, NULL);
 	}
-    
+
 	formatCtx = avformat_alloc_context();
 
 	if (!formatCtx)
@@ -61,15 +60,15 @@ VideoWriter::generateVideo()
 	formatCtx->oformat = outFormat;
 
 	// -- Output filename --
-	snprintf(formatCtx->filename, sizeof(formatCtx->filename), "%s", "/tmp/output.mpg");
+	formatCtx->url = av_strdup("/tmp/output.mpg");
 
 
 	// -- Single output video stream --
-	if (outFormat->video_codec != CODEC_ID_NONE)
+	if (outFormat->video_codec != AV_CODEC_ID_NONE)
 		video_st = addVideoStream(formatCtx, outFormat->video_codec);
-    
+
 	// -- Format Log --
-	av_dump_format(formatCtx, 0, formatCtx->filename, 1);
+	av_dump_format(formatCtx, 0, formatCtx->url, 1);
 
 
 	// -- Opening video stream --
@@ -83,10 +82,10 @@ VideoWriter::generateVideo()
 	// -- Opening output file --
 	if ( !(outFormat->flags & AVFMT_NOFILE) )
 	{
-		printf("Opening file : %s\n", formatCtx->filename);
-		if (avio_open(&formatCtx->pb, formatCtx->filename, AVIO_FLAG_WRITE) < 0)
+		printf("Opening file : %s\n", formatCtx->url);
+		if (avio_open(&formatCtx->pb, formatCtx->url, AVIO_FLAG_WRITE) < 0)
 		{
-			printf("Could not open '%s'\n", formatCtx->filename);
+			printf("Could not open '%s'\n", formatCtx->url);
 			exit(1);
 		}
 	}
@@ -106,16 +105,9 @@ VideoWriter::generateVideo()
 	closeVideo(formatCtx, video_st);
 
 	// -- Freeing all objects --
-	for(int i = 0; i < formatCtx->nb_streams; i++)
-	{
-		av_freep(&formatCtx->streams[i]->codec);
-		av_freep(&formatCtx->streams[i]);
-	}
+	avformat_free_context(formatCtx);
 
-	if (!(outFormat->flags & AVFMT_NOFILE))
-		avio_close(formatCtx->pb);
-
-	av_free(formatCtx);
+	return NULL;
 }
 
 
@@ -123,10 +115,10 @@ VideoWriter::generateVideo()
 AVStream*
 VideoWriter::addVideoStream(AVFormatContext *formatCtx, AVCodecID codecID)
 {
-	AVCodecContext*	codecCtx;
 	AVStream*		stream;
 
-	stream = avformat_new_stream(formatCtx, NULL);
+	const AVCodec *codec = avcodec_find_encoder(codecID);
+	stream = avformat_new_stream(formatCtx, codec);
 
 	if (!stream)
 	{
@@ -134,8 +126,8 @@ VideoWriter::addVideoStream(AVFormatContext *formatCtx, AVCodecID codecID)
 		return NULL;
 	}
 
-	codecCtx				= stream->codec;
-	codecCtx->codec_id		= CODEC_ID_BMP;
+	codecCtx = avcodec_alloc_context3(codec);
+	codecCtx->codec_id		= AV_CODEC_ID_BMP;
 	codecCtx->codec_type	= AVMEDIA_TYPE_VIDEO;
 
 	// -- Sample parameters --
@@ -147,18 +139,20 @@ VideoWriter::addVideoStream(AVFormatContext *formatCtx, AVCodecID codecID)
 	codecCtx->gop_size		= 12; /* emit one intra frame every twelve frames at most */
 	codecCtx->pix_fmt		= STREAM_PIX_FMT;
 
-	if (codecCtx->codec_id == CODEC_ID_MPEG2VIDEO)
+	if (codecCtx->codec_id == AV_CODEC_ID_MPEG2VIDEO)
 		codecCtx->max_b_frames = 2;
 
-	if (codecCtx->codec_id == CODEC_ID_MPEG1VIDEO)
+	if (codecCtx->codec_id == AV_CODEC_ID_MPEG1VIDEO)
 		codecCtx->mb_decision=2;
 
 	//  -- Separate stream headers --
 	if(!strcmp(formatCtx->oformat->name, "mp4") || !strcmp(formatCtx->oformat->name, "mov") || !strcmp(formatCtx->oformat->name, "3gp"))
 	{
 		printf("Global header!\n");
-		codecCtx->flags |= CODEC_FLAG_GLOBAL_HEADER;
+		codecCtx->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 	}
+
+	avcodec_parameters_from_context(stream->codecpar, codecCtx);
 
 	return stream;
 }
@@ -168,18 +162,14 @@ VideoWriter::addVideoStream(AVFormatContext *formatCtx, AVCodecID codecID)
 void
 VideoWriter::writeVideoFrame(AVFormatContext* formatCtx, AVStream* stream, int index)
 {
-	int out_size, ret;
-	AVCodecContext*	codecCtx;
-	static struct SwsContext *img_convert_ctx;
+	int ret;
 
-	codecCtx = stream->codec;
-  
 	AVPacket pkt;
 
 	double ts = (double)index * (double)frameStep;
 
 	MediumFrame* frame = device->m_get_rgb_frame(ts);
-	
+
 	av_init_packet(&pkt);
 
 	// -- Packet settings --
@@ -196,10 +186,7 @@ VideoWriter::writeVideoFrame(AVFormatContext* formatCtx, AVStream* stream, int i
 void
 VideoWriter::openVideo(AVFormatContext *formatCtx, AVStream *stream)
 {
-	AVCodec *codec;
-	AVCodecContext *codecCtx;
-
-	codecCtx = stream->codec;
+	const AVCodec *codec;
 
 	/* find the video encoder */
 	codec = avcodec_find_encoder(codecCtx->codec_id);
@@ -219,15 +206,9 @@ VideoWriter::openVideo(AVFormatContext *formatCtx, AVStream *stream)
 		printf("codec opened successfully\n");
 
 	video_outbuf = NULL;
-	
-	if (!(formatCtx->oformat->flags & AVFMT_RAWPICTURE))
+
 	{
 		/* allocate output buffer */
-		/* XXX: API change will be done */
-		/* buffers passed into lav* can be allocated any way you prefer,
-			as long as they're aligned enough for the architecture, and
-			they're freed appropriately (such as using av_free for buffers
-			allocated with av_malloc) */
 		video_outbuf_size = 200000;
 		video_outbuf = (uint8_t*)av_malloc(video_outbuf_size);
 	}
@@ -237,15 +218,15 @@ VideoWriter::openVideo(AVFormatContext *formatCtx, AVStream *stream)
 
 	if (!picture)
 		printf("Could not allocate picture\n");
-	
+
 	/* if the output format is not YUV420P, then a temporary YUV420P
 	picture is needed too. It is then converted to the required
 	output format */
 	tmp_picture = NULL;
 
-	if (codecCtx->pix_fmt != PIX_FMT_YUV420P)
+	if (codecCtx->pix_fmt != AV_PIX_FMT_YUV420P)
 	{
-		tmp_picture = alloc_picture(PIX_FMT_YUV420P, codecCtx->width, codecCtx->height);
+		tmp_picture = alloc_picture(AV_PIX_FMT_YUV420P, codecCtx->width, codecCtx->height);
 		if (!tmp_picture)
 		{
 			fprintf(stderr, "Could not allocate temporary picture\n");
@@ -261,7 +242,7 @@ VideoWriter::alloc_picture(int pix_fmt, int width, int height)
 	uint8_t *picture_buf;
 	int size;
 
-	picture = avcodec_alloc_frame();
+	picture = av_frame_alloc();
 	if (!picture)
 		return NULL;
 
@@ -284,7 +265,8 @@ VideoWriter::alloc_picture(int pix_fmt, int width, int height)
 void
 VideoWriter::closeVideo(AVFormatContext *formatCtx, AVStream *stream)
 {
-	avcodec_close(stream->codec);
+	if (codecCtx)
+		avcodec_free_context(&codecCtx);
 	av_free(picture->data[0]);
 	av_free(picture);
 
@@ -295,4 +277,3 @@ VideoWriter::closeVideo(AVFormatContext *formatCtx, AVStream *stream)
 	}
 	av_free(video_outbuf);
 }
-

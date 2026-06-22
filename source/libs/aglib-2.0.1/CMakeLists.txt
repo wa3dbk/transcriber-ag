@@ -30,11 +30,11 @@ endif (WIN32 AND NOT MINGW)
 
 if (APPLE)
 	include_directories(
-		/sw/include
+		${XERCES_INCLUDE_DIRS}
 	)
 
 	link_directories(
-		/sw/lib
+		${XERCES_LIBRARY_DIRS}
 	)
 endif (APPLE)
 
