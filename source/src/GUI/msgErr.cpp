@@ -78,7 +78,9 @@ int main(int argc, char *argv[])
 	set_dlg_icon(&dialog, ICO_TRANSCRIBER, 12) ;
 	dialog.set_title("Attention") ;
 
+#if !GLIB_CHECK_VERSION(2,32,0)
  	g_thread_init(NULL);
+#endif
 	gdk_threads_init();
 
 	gdk_threads_enter() ;

@@ -148,7 +148,32 @@ int main(int argc, char *argv[])
 	defaultConfig_path = FileHelper::build_path(exedir, "etc");
 	defaultLocale_path = FileHelper::build_path(exedir, "locale");
     #else
-    defaultConfig_path = "/etc/TransAG";
+    // Search for config directory in multiple locations:
+    // 1. Walk up from executable to find etc/TransAG (build-tree and install-tree)
+    // 2. /usr/local/etc/TransAG (Homebrew-style install on macOS)
+    // 3. /etc/TransAG (system-wide install on Linux)
+    {
+        std::vector<std::string> config_search_paths;
+        // Walk up from exe directory looking for etc/TransAG
+        string walk = exedir;
+        for (int i = 0; i < 5 && !walk.empty() && walk != "/"; ++i) {
+            string candidate = FileHelper::build_path(walk, FileHelper::build_path("etc", "TransAG"));
+            config_search_paths.push_back(candidate);
+            walk = Glib::path_get_dirname(walk);
+        }
+        config_search_paths.push_back("/usr/local/etc/TransAG");
+        config_search_paths.push_back("/etc/TransAG");
+        defaultConfig_path = "";
+        for (size_t i = 0; i < config_search_paths.size(); ++i) {
+            if (Glib::file_test(config_search_paths[i], Glib::FILE_TEST_EXISTS)) {
+                defaultConfig_path = config_search_paths[i];
+                break;
+            }
+        }
+        if (defaultConfig_path.empty()) {
+            defaultConfig_path = "/etc/TransAG";
+        }
+    }
     defaultLocale_path = LOCALEDIR;
     #endif
     if ( ! Glib::file_test(defaultConfig_path, Glib::FILE_TEST_EXISTS) ) {
@@ -511,7 +536,9 @@ int main(int argc, char *argv[])
 		} //end start_ok1
 	} //end start_ok0
 
+#if !GLIB_CHECK_VERSION(2,32,0)
 	g_thread_init(NULL);
+#endif
 	gdk_threads_init();
 
 	//> -- Compute ICONS BASE
