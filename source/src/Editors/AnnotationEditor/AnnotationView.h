@@ -16,11 +16,13 @@
 #include <stack>
 #include <gtkmm.h>
 #include <time.h>
+#include "TranscriberAG-config.h"
 
-/* SPELL */
-//extern "C" {
-//	typedef struct _GtkSpell GtkSpell;
-//}
+#ifdef HAVE_GTKSPELL
+extern "C" {
+	typedef struct _GtkSpell GtkSpell;
+}
+#endif
 
 #include "DataModel/UndoableDataModel.h"
 
@@ -89,13 +91,13 @@ class AnnotationView : public UndoableTextView
 		 */
 		void configureDisplay(const string& editmode="EditMode", bool is_stereo=false);
 
-/* SPELL */
-//		/**
-//		 * Configures text component speller
-//		 * @param master_dic		Speller dictionary path
-//		 * @param lang_iso639_3		Locale language used
-//		 */
-//		void configureSpeller(string master_dic="", string lang_iso639_3="eng") ;
+#ifdef HAVE_GTKSPELL
+		/**
+		 * Configures text component speller
+		 * @param lang_iso639_2		Locale language used
+		 */
+		void configureSpeller(string lang_iso639_2="eng") ;
+#endif
 
 		/**
 		* Accessor to the editor that embeds the view
@@ -415,11 +417,12 @@ class AnnotationView : public UndoableTextView
 		 */
 		const std::string& getColorsCfgOption(const std::string& key) { return m_colorsCfg[key]; }
 
-/* SPELL */
-//		/**
-//		 * Detaches speller associated to current annotation view
-//		 */
-//		void detachSpeller();
+#ifdef HAVE_GTKSPELL
+		/**
+		 * Detaches speller associated to current annotation view
+		 */
+		void detachSpeller();
+#endif
 
 		/**
 		 * Scrolls view to the given text offset when idle.
@@ -511,11 +514,12 @@ class AnnotationView : public UndoableTextView
 		 */
 		void setFocus(bool protectSignal) ;
 
-/* SPELL */
-//		/**
-//		 * Forces speller to check all buffer.
-//		 */
-//		void speller_recheck_all() ;
+#ifdef HAVE_GTKSPELL
+		/**
+		 * Forces speller to check all buffer.
+		 */
+		void speller_recheck_all() ;
+#endif
 
 		/**
 		 * Defines whether qualifiers label corresponding to nammed entities are displayed with a
@@ -573,13 +577,14 @@ class AnnotationView : public UndoableTextView
 		 */
 		void inhibateStoreEdits(bool b=true) ;
 
-/* SPELL */
-//		/**
-//		 * Inhibates speller mechanism
-//		 * @param b				True for locking, False for unlocking
-//		 * @param recheck		If set to true, the speller rechecks all buffer
-//		 */
-//		void inhibateSpellChecking(bool b=true, bool recheck=false) ;
+#ifdef HAVE_GTKSPELL
+		/**
+		 * Inhibates speller mechanism
+		 * @param b				True for locking, False for unlocking
+		 * @param recheck		If set to true, the speller rechecks all buffer
+		 */
+		void inhibateSpellChecking(bool b=true, bool recheck=false) ;
+#endif
 
 		/**
 		 * Checks the stereo mode
@@ -692,12 +697,13 @@ class AnnotationView : public UndoableTextView
 		 */
 		bool getWithConfidence() const ;
 
-/* SPELL */
-//		/**
-//		 * Accessor to speller
-//		 * @return	GtkSpell pointer
-//		 */
-//		GtkSpell* getSpeller() { return m_speller; }
+#ifdef HAVE_GTKSPELL
+		/**
+		 * Accessor to speller
+		 * @return	GtkSpell pointer
+		 */
+		GtkSpell* getSpeller() { return m_speller; }
+#endif
 
 		/**
 		 * Accessor to main graph type used by editor
@@ -942,10 +948,9 @@ class AnnotationView : public UndoableTextView
 
 		void getIdAndOffsetFromIterator(Gtk::TextIter& pos, string& id, int& offset, bool basetype_only = true);
 
-/* SPELL */
-//		bool checkSpellerUsage(const std::string& lang_iso639_2) ;
-/* SPELL */
-//		const char* determineAspellLanguageCode(const std::string& lang_iso639_2) ;
+#ifdef HAVE_GTKSPELL
+		bool checkSpellerUsage(const std::string& lang_iso639_2) ;
+#endif
 		/**
 		* render all annotations at a given mainstream type level for a given signal part
 		* @param mainstream_types vector of mainstream types to render
@@ -983,8 +988,9 @@ class AnnotationView : public UndoableTextView
 		UndoableDataModel& m_dataModel; /** associated data model */
 		std::map<std::string, std::string>& m_configuration; /**> configuration parameters */
 		std::map<std::string, std::string>& m_colorsCfg; /**> configuration parameters */
-/* SPELL */
-//		GtkSpell* m_speller; /**< spell checker */
+#ifdef HAVE_GTKSPELL
+		GtkSpell* m_speller; /**< spell checker */
+#endif
 		string m_lang;		/** transcription language */
 
 		bool m_spaceHandlingModified ;

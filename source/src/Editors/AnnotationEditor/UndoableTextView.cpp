@@ -543,10 +543,6 @@ void InsertAction::redo(Glib::RefPtr<tag::AnnotationBuffer>& buffer) // IN:
 	// -- Remove propagating tags
 	buffer->removePropagatingTags(buffer->get_iter_at_offset(mIndex), it);
 
-	// -- Recheck with speller
-/* SPELL */
-//	buffer->spellerRecheck(mIndex, it.get_offset()) ;
-
 	m_signalAddToLastIterOffset.emit(mIndex);
 
 	LOG_RESET
@@ -713,10 +709,6 @@ void EraseAction::undo(Glib::RefPtr<tag::AnnotationBuffer>& buffer) // IN:
 
 	Gtk::TextIter it = buffer->insert(buffer->get_iter_at_offset(m_start), mText);
 	buffer->removePropagatingTags(buffer->get_iter_at_offset(m_start), it);
-
-	// -- Recheck with speller
-/* SPELL */
-//	buffer->spellerRecheck(m_start, m_end) ;
 
 	int cursor_position;
 	int update_position;

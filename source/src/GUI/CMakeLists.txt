@@ -5,7 +5,7 @@
 # --- Includes ---
 include_directories(
 	${LIVEMEDIA_INCLUDE_DIRS}
-#	${GTKSPELL}
+	${GTKSPELL_INCLUDE_DIRS}
 	${SOUNDTOUCH_INCLUDE_DIRS}
 	${GTKMM_INCLUDE_DIRS}
 	${AGLIB_INCLUDE_DIRS}
@@ -27,7 +27,7 @@ include_directories(
 link_directories(
 	${LIVEMEDIA_LIBRARY_DIRS}
 	${AGLIB_LIBRARY_DIRS}
-#	${GTKSPELL_BUILD}/gtkspell
+	${GTKSPELL_LIBRARY_DIRS}
 	${SOUNDTOUCH_LIBRARY_DIRS}
 	${GTKMM_LIBRARY_DIRS}
 	${SRC}/Common
@@ -128,7 +128,7 @@ target_link_libraries(
 	gthread-2.0
 	ag
 	${PORTAUDIO_LIBRARIES}
-#	gtkspell
+	${GTKSPELL_LIBRARIES}
 	${GTKMM_LIBRARIES}
 	${FFMPEG_LIBRARIES}
 	${APPLE_LINKS}

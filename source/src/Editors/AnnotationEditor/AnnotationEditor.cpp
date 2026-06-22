@@ -2210,13 +2210,14 @@ bool AnnotationEditor::terminateSession(bool emit_signal)
 	if (videoManager)
 		videoManager->hideVideo();
 
-/* SPELL */
-//	for (guint i = 0; i < m_textView.size(); ++i)
-//	{
-//		if (m_textView[i])
-//			m_textView[i]->detachSpeller();
-//	}
-//	Log::out() << " >>> speller detached" << endl;
+#ifdef HAVE_GTKSPELL
+	for (guint i = 0; i < m_textView.size(); ++i)
+	{
+		if (m_textView[i])
+			m_textView[i]->detachSpeller();
+	}
+	Log::out() << " >>> speller detached" << endl;
+#endif
 
 	m_dataModel.clear(); // free mem allocated for dataModel
 	Log::out() << " >>> model cleaned" << endl;
@@ -5305,30 +5306,28 @@ void AnnotationEditor::reset_timeScale(bool show)
 		m_signalView->show_scale(show);
 }
 
-/* SPELL */
-//void AnnotationEditor::reset_speller()
-//{
-//	std::vector<AnnotationView*>::iterator it;
-//
-//	//> Configure display of editor for each view
-//	string speller_enabled = m_configuration["Speller,enabled"];
-//	string speller_directory;
-//	if (speller_enabled == "true")
-//		speller_directory = m_configuration["Speller,directory"];
-//	else
-//		speller_directory = "nospell";
-//
-//	for (it = m_textView.begin(); it != m_textView.end(); it++)
-//	{
-//		if (*it)
-//		{
-//			(*it)->detachSpeller();
-//			m_lang = m_dataModel.getAGSetProperty("lang");
-//			(*it)->configureSpeller(speller_directory, m_lang);
-//			(*it)->speller_recheck_all();
-//		}
-//	}
-//}
+#ifdef HAVE_GTKSPELL
+void AnnotationEditor::reset_speller()
+{
+	std::vector<AnnotationView*>::iterator it;
+
+	string speller_enabled = m_configuration["Speller,enabled"];
+
+	for (it = m_textView.begin(); it != m_textView.end(); it++)
+	{
+		if (*it)
+		{
+			(*it)->detachSpeller();
+			if (speller_enabled == "true")
+			{
+				m_lang = m_dataModel.getAGSetProperty("lang");
+				(*it)->configureSpeller(m_lang);
+				(*it)->speller_recheck_all();
+			}
+		}
+	}
+}
+#endif
 
 void AnnotationEditor::reset_entityTags_bg(bool use_bg)
 {

@@ -19,10 +19,6 @@
 #include <iostream>
 #include <gtkmm.h>
 
-/* SPELL */
-//extern "C" {
-//#include <gtkspell/gtkspell.h>
-//}
 
 #include "Editors/AnnotationEditor/Anchors.h"
 using namespace std;
@@ -831,25 +827,6 @@ class AnnotationBuffer : public Gtk::TextBuffer
 		 */
 		void setEditable(const Gtk::TextIter& iter, bool editable=true);
 
-/* SPELL */
-//		/**
-//		 * Set the speller that the parent AnnotationView is using
-//		 * @param spell			Pointer on the speller used by the parent
-//		 */
-//		void setSpeller(GtkSpell* spell) ;
-
-		/**
-		 * Sets speller confidence mode
-		 * @param value			True for enabling speller to use confidence tag
-		 */
-		void setSpellerConfidence(bool value) ;
-
-		/**
-		 * Recheck the given range
-		 * @param off_start		Offset start
-		 * @param off_end		Offset end
-		 */
-		void spellerRecheck(float off_start, float off_end) ;
 
 		/**
 		 *	Restore buffer cursor at the last offset position
@@ -1202,8 +1179,6 @@ class AnnotationBuffer : public Gtk::TextBuffer
 		bool m_spaceHandling;
 		bool m_spaceBordering;
 		std::set<gunichar> m_borderedChars;
-/* SPELL */
-//		GtkSpell* m_speller; /**< parent spell checker */
 
 		Glib::RefPtr<Gtk::TextMark> m_backup[3];
 

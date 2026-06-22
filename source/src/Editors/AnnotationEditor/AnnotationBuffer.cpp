@@ -39,13 +39,9 @@ AnnotationBuffer::AnnotationBuffer() :
 	m_hasSelection(false)
 {
 	cursorOffset = 0;
-/* SPELL */
-//	m_nospellTag = (Glib::RefPtr<Gtk::TextTag>)0;
 	m_labelTag = (Glib::RefPtr<Gtk::TextTag>) 0;
 	m_confidenceTag = (Glib::RefPtr<Gtk::TextTag>) 0;
 	m_inhibSignal = false;
-/* SPELL */
-//	m_speller = NULL;
 	m_view = NULL;
 	//activate to TRUE if wanted to take the turn language by default
 	m_language_change_activated = false;
@@ -86,9 +82,6 @@ void AnnotationBuffer::configure(AnnotationView* view)
 
 	string tagname;
 
-	/* SPELL */
-	//	m_nospellTag = get_tag_table()->lookup(GTKSPELL_NOCHECK_TAG);  // le tag NOSPELL
-	//	if ( m_nospellTag  == 0 ) MSGOUT << " Pas de nospell tag !! " << endl;
 
 	m_tagPrefix["background"] = "background";
 	m_tagPrefix["background_end"] = "background";
@@ -429,51 +422,6 @@ void AnnotationBuffer::check_presentation_chars_in_buffer()
 	TRACE_D << endl;
 }
 
-/**
- * Set the speller that the parent AnnotationView is using
- * @param spell			Pointer on the speller used by the parent
- */
-/* SPELL */
-/*
- void AnnotationBuffer::setSpeller(GtkSpell* spell)
- {
- m_speller = spell;
- if ( m_view && m_view->getWithConfidence() )
- setSpellerConfidence(true);
- else
- setSpellerConfidence(false) ;
- }
- */
-
-/* SPELL */
-/*
- void AnnotationBuffer::setSpellerConfidence(bool value)
- {
- if ( !m_speller || m_confidenceTag == (Glib::RefPtr<Gtk::TextTag>)0 )
- return ;
-
- Log::out() << "~~~~ speller confidence mode [" << value << "]" << std::endl ;
-
- if (value)
- gtkspell_set_confidence_tag(m_speller, m_confidenceTag->property_name().get_value().c_str());
- else
- gtkspell_set_confidence_tag(m_speller, NULL) ;
- }
- */
-
-/* SPELL */
-/*
- void AnnotationBuffer::spellerRecheck(float off_start, float off_end)
- {
- if ( !m_speller || off_end<0 || off_start<0 || off_start==off_end)
- return ;
-
- Gtk::TextIter start = get_iter_at_offset(off_start) ;
- Gtk::TextIter end = get_iter_at_offset(off_end) ;
-
- gtkspell_recheck_range(m_speller, start.gobj(), end.gobj());
- }
- */
 
 /*========================================================================
  *
@@ -511,10 +459,6 @@ const string& AnnotationBuffer::insertAnchoredLabel(const string& type, const st
 
 	if (!label.empty())
 	{
-		/* SPELL */
-		//		if ( m_speller != NULL ) {
-		//			gtkspell_inhibate_check(m_speller, true);
-		//		}
 		Glib::ustring label2Add = "";
 
 		if (r2l)
@@ -533,19 +477,8 @@ const string& AnnotationBuffer::insertAnchoredLabel(const string& type, const st
 			if (tag)
 				apply_tag(tag, prevstart, pos);
 		}
-		/* SPELL */
-		//		if ( m_nospellTag != 0 )
-		//			apply_tag(m_nospellTag, prevstart, pos);
-
 		if (m_newlineAfter[type])
 			pos = insert_with_tag(pos, "\n", m_labelTag);
-
-		/* SPELL */
-		//		if ( m_speller != NULL ) {
-		//			//  spell error tag may have propagate -> remove it
-		//			gtkspell_recheck_range(m_speller, m_startMark->get_iter().gobj(), pos.gobj());
-		//			gtkspell_inhibate_check(m_speller, false);
-		//		}
 
 		addTrackTag(m_startMark->get_iter(), pos, track);
 	}
@@ -571,18 +504,10 @@ void AnnotationBuffer::insertText(const Glib::ustring& text)
 		const Gtk::TextIter& pos = get_insert()->get_iter();
 		guint curoff = pos.get_offset();
 
-		/* SPELL */
-		//		if ( m_speller != NULL ) gtkspell_inhibate_check(m_speller, true);
-
 		const Gtk::TextIter& endpos = AnnotationBuffer::insert(pos, text);
 
 		const Gtk::TextIter& startpos = get_iter_at_offset(curoff);
 		removePropagatingTags(startpos, endpos);
-		/* SPELL */
-		//		if ( m_speller != NULL ) {
-		//			gtkspell_inhibate_check(m_speller, false);
-		//			gtkspell_recheck_range(m_speller, startpos.gobj(), endpos.gobj());
-		//		}
 	}
 }
 
@@ -693,11 +618,6 @@ void AnnotationBuffer::insertAnchoredTaggedText(const string& type, const string
 		prepareElementTags(id, type, true, tags);
 
 		Gtk::TextIter pos = get_insert()->get_iter();
-		/* SPELL */
-		//		if ( m_speller != NULL ) {
-		//			gtkspell_inhibate_check(m_speller, true);
-		//		}
-
 		//2.1 -- Check if a mark needs to be moved after insertion
 		/* If we're inserting a tag that will represent an element
 		 * (will be followed by a mark-anchor or is followed if we're processing an update)
@@ -725,12 +645,6 @@ void AnnotationBuffer::insertAnchoredTaggedText(const string& type, const string
 			it++;
 			setTimestamp(m_startMark->get_iter(), it, true);
 		}
-
-		/* SPELL */
-		//		if ( m_speller != NULL ) {
-		//			gtkspell_recheck_range(m_speller, m_startMark->get_iter().gobj(), pos.gobj());
-		//			gtkspell_inhibate_check(m_speller, false);
-		//		}
 
 		//2.2 -- Move mark if needed
 		if (markNeedLeftG)
@@ -1393,9 +1307,6 @@ void AnnotationBuffer::prepareElementTags(const string& id, const string& type, 
 	//-- label tag
 	//	tags.push_back(m_labelTag);
 
-	/* SPELL */
-	//	if ( m_nospellTag != 0 )
-	//		tags.push_back(m_nospellTag);
 }
 
 void AnnotationBuffer::insertPixElement(const string& id, const std::string& parent_id, const string& type,
@@ -1889,11 +1800,6 @@ void AnnotationBuffer::setAnchoredLabel(const std::string& id, const std::string
 
 		begin_user_action();
 
-		/* SPELL */
-		//		if ( m_speller != NULL ) {
-		//			gtkspell_inhibate_check(m_speller, true);
-		//			move_mark(m_startMark, get_insert()->get_iter());
-		//		}
 
 		guint start_offset = start.get_offset();
 		guint stop_offset = stop.get_offset();
@@ -1903,9 +1809,6 @@ void AnnotationBuffer::setAnchoredLabel(const std::string& id, const std::string
 		//		tags.push_back(m_labelTag);
 		if (tracktag)
 			tags.push_back(tracktag);
-		/* SPELL */
-		//		if ( m_nospellTag != 0 )
-		//			tags.push_back(m_nospellTag);
 
 		InputLanguage *il = NULL;
 		std::string label2Add = "";
@@ -1917,13 +1820,6 @@ void AnnotationBuffer::setAnchoredLabel(const std::string& id, const std::string
 
 		//> -- Insert new label
 		stop = insert_with_tags(stop, label2Add, tags);
-
-		/* SPELL */
-		//		if ( m_speller != NULL )
-		//		{
-		//			//  spell error tag may have propagate -> remove it
-		//			gtkspell_inhibate_check(m_speller, false);
-		//		}
 
 		//> -- Prepare anchor
 		anchors().moveAnchor(anchor, get_iter_at_offset(start_offset));

@@ -11,7 +11,7 @@ include_directories(
 	${SRC}/AudioWidget
 	${SRC}
 	${AGLIB_INCLUDE_DIRS}
-#	${GTKSPELL}
+	${GTKSPELL_INCLUDE_DIRS}
 	${LIVEMEDIA_INCLUDE_DIRS}
 	${SOUNDTOUCH_INCLUDE_DIRS}
 	${GTKMM_INCLUDE_DIRS}
@@ -97,5 +97,6 @@ target_link_libraries(
 	xerces-c
 	avcodec
 	avformat
+	${GTKSPELL_LIBRARIES}
 	${WIN32_LINKS}
 )

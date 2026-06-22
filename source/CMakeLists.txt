@@ -82,6 +82,7 @@ if (UNIX OR MINGW)
     if (NOT LIBTAG)
 #	    find_package			(ASPELL		REQUIRED)
     	pkg_check_modules		(GTKMM		gtkmm-2.4)
+    	pkg_check_modules		(GTKSPELL	gtkspell-2.0)
     	pkg_check_modules		(SNDFILE	sndfile)
     	pkg_check_modules		(PORTAUDIO	portaudio-2.0)
     else (NOT LIBTAG)
@@ -96,7 +97,6 @@ endif (UNIX OR MINGW)
 set	(SRC				${PROJECT_SOURCE_DIR}/src)
 
 # --- Libraries ---
-#set	(GTKSPELL			${LIBS}/gtkspell-2.0.11-patch-BT)
 set	(LIVEMEDIA			${LIBS}/live555)
 
 set (SOUNDTOUCH_LIBRARY_DIRS ${PROJECT_BINARY_DIR}/libs/soundtouch-2.3.3/source/SoundTouch)
@@ -104,7 +104,6 @@ set (SOUNDTOUCH_INCLUDE_DIRS ${PROJECT_SOURCE_DIR}/libs/soundtouch-2.3.3/include
 
 set (AGLIB_LIBRARY_DIRS		${PROJECT_BINARY_DIR}/libs/aglib-2.0.1/src/ag)
 set (AGLIB_INCLUDE_DIRS		${PROJECT_SOURCE_DIR}/libs/aglib-2.0.1/src/ag)
-#set	(GTKSPELL_BUILD		${LIBS}/gtkspell-2.0.11-patch-BT)
 set (LIVEMEDIA_LIBRARY_DIRS		${PROJECT_BINARY_DIR}/libs/live555/liveMedia ${PROJECT_BINARY_DIR}/libs/live555/groupsock ${PROJECT_BINARY_DIR}/libs/live555/UsageEnvironment ${PROJECT_BINARY_DIR}/libs/live555/BasicUsageEnvironment)
 set (LIVEMEDIA_INCLUDE_DIRS		${PROJECT_SOURCE_DIR}/libs/live555/liveMedia/include ${PROJECT_SOURCE_DIR}/libs/live555/groupsock/include ${PROJECT_SOURCE_DIR}/libs/live555/UsageEnvironment/include ${PROJECT_SOURCE_DIR}/libs/live555/BasicUsageEnvironment/include)
 
@@ -120,18 +119,24 @@ find_package(FFMPEG	REQUIRED)
 
 # -- Global Includes --
 
+if (GTKSPELL_FOUND)
+	set(HAVE_GTKSPELL 1)
+endif()
+
 include_directories(
 	${PROJECT_BINARY_DIR}/include/
 	${PROJECT_SOURCE_DIR}/include/
 	${XERCES_INCLUDE_DIRS}
 	${GLIBMM_INCLUDE_DIRS}
 	${GTKMM_INCLUDE_DIRS}
+	${GTKSPELL_INCLUDE_DIRS}
 )
 
 link_directories(
 	${XERCES_LIBRARY_DIRS}
 	${GLIBMM_LIBRARY_DIRS}
 	${GTKMM_LIBRARY_DIRS}
+	${GTKSPELL_LIBRARY_DIRS}
 )
 
 # --- Win32 Settings ---

@@ -8,14 +8,14 @@ include_directories(
 	${SRC}/GUI/Common
 	${SRC}/GUI/Tools
 	${SRC}/GUI/Tree
-#	${GTKSPELL}
+	${GTKSPELL_INCLUDE_DIRS}
 )
 
 
 # --- Links ---
 link_directories(
 	${GTKMM_LIBRARY_DIRS}
-#	${GTKSPELL}/build/gtkspell
+	${GTKSPELL_LIBRARY_DIRS}
 )
 
 
@@ -44,8 +44,7 @@ target_link_libraries(
 	TreeModule
 	Common
 	${GTKMM_LINK_LIBRARIES}
-#	gtkspell
-#	aspell
+	${GTKSPELL_LIBRARIES}
 	xerces-c
 )
 

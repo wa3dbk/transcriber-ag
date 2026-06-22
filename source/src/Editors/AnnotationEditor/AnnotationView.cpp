@@ -65,10 +65,11 @@ using namespace std;
 
 using namespace Gtk::Menu_Helpers;
 
-/* SPELL */
-//extern "C" {
-//#include <gtkspell/gtkspell.h>
-//}
+#ifdef HAVE_GTKSPELL
+extern "C" {
+#include <gtkspell/gtkspell.h>
+}
+#endif
 
 namespace tag {
 
@@ -156,8 +157,9 @@ m_overlapState(false)
 AnnotationView::~AnnotationView()
 {
 	// -- clean speller
-/* SPELL */
-//	detachSpeller();
+#ifdef HAVE_GTKSPELL
+	detachSpeller();
+#endif
 
 	// -- clean tooltip
 	if (m_tooltip)
@@ -178,8 +180,7 @@ AnnotationView::~AnnotationView()
 /**
  * detach speller associated to current annotation view
  */
-/* SPELL */
-/*
+#ifdef HAVE_GTKSPELL
 void AnnotationView::detachSpeller()
 {
 	if ( m_speller != NULL ) {
@@ -187,7 +188,7 @@ void AnnotationView::detachSpeller()
 		m_speller = NULL;
 	}
 }
-*/
+#endif
 
 
 /**
@@ -210,8 +211,9 @@ void AnnotationView::initView(bool editable)
 	m_withConfidence = true ;
 	disable_thread = false ;
 	m_signalTrack = ( m_viewTrack == -1 ? 0 : m_viewTrack);
-/* SPELL */
-//	m_speller = NULL;
+#ifdef HAVE_GTKSPELL
+	m_speller = NULL;
+#endif
 	m_pendingTextEdits = 0;
 	m_inhibPendingEdits = false;
 	m_inhibateSynchro = false;
@@ -397,8 +399,7 @@ AnnotationMenu* AnnotationView::getRendererMenu(const string& type, const string
 	return menu;
 }
 
-/* SPELL */
-/*
+#ifdef HAVE_GTKSPELL
 bool AnnotationView::checkSpellerUsage(const std::string& lang_iso639_2)
 {
 	std::string skipped = m_configuration["Speller,ignored"] ;
@@ -418,138 +419,79 @@ bool AnnotationView::checkSpellerUsage(const std::string& lang_iso639_2)
 	else
 		return true ;
 }
-*/
+#endif
 
-/* SPELL */
+#ifdef HAVE_GTKSPELL
 /*
-const char* AnnotationView::determineAspellLanguageCode(const std::string& lang_iso639_2)
-{
-	std::vector<std::string> codes ;
-	std::vector<std::string>::iterator it ;
-	StringOps(lang_iso639_2).split(codes, "/") ;
-	for (it=codes.begin(); it!=codes.end() ; it++)
-	{
-		const char* new_lang_iso639_1 = ISO639::get2LetterCode((*it).c_str()) ;
-		if ( new_lang_iso639_1 && strcmp(new_lang_iso639_1,"") !=0 )
-			return new_lang_iso639_1 ;
-	}
-
-	return "" ;
-}
-*/
-
-/*
- * Configure speller
- * Method called by configure method or preferences reset only
+ * Configure speller using stock gtkspell2 API.
+ * Method called by configure method or preferences reset only.
+ * Uses system enchant dictionaries (hunspell/myspell).
  */
-/* SPELL */
-/*
-void AnnotationView::configureSpeller(string master_dic, string lang_iso639_2)
+void AnnotationView::configureSpeller(string lang_iso639_2)
 {
-	// -- Check availability
+	// -- Check if speller is enabled in configuration
+	if ( m_configuration["Speller,enabled"] != "true" )
+		return ;
+
+	// -- Check availability for this language
 	if ( !checkSpellerUsage(lang_iso639_2) )
 		return ;
 
-	// -- Setting Dictionary Dico Option --
-	gtkspell_set_config_option("dict", master_dic.c_str() );
-
-	// -- Trace of antic existence ? remove it
+	// -- Detach previous speller if any
 	if ( m_speller != NULL )
 	{
 		gtkspell_detach(m_speller);
 		m_speller = NULL;
-		getBuffer()->setSpeller(NULL);
 	}
 
+	// -- Determine language for this track
 	StringOps lan(lang_iso639_2) ;
 	std::vector<string> cut ;
 	lan.split(cut, "/", true) ;
 
-	if (cut.size()==2 && m_viewTrack > -1 && m_viewTrack <= cut.size() )
+	if (cut.size()==2 && m_viewTrack > -1 && (unsigned)m_viewTrack < cut.size() )
 		m_lang = cut[m_viewTrack] ;
 	else
 		m_lang = lang_iso639_2 ;
 
+	// -- Convert ISO 639-2 (3-letter) to ISO 639-1 (2-letter) for gtkspell/enchant
+	const char* lang_iso639_1 = ISO639::get2LetterCode(m_lang.c_str()) ;
+	if ( !lang_iso639_1 || strcmp(lang_iso639_1, "") == 0 )
+	{
+		Log::out() << "Speller: no 2-letter code found for " << m_lang << ", skipping" << std::endl ;
+		return ;
+	}
+
+	// -- Attach spell checker (stock gtkspell2: 3-arg API)
 	GError *spell_error = NULL;
-//	m_lang = lang_iso639_2;
+	Glib::Timer timspell;
 
-	// -- Check for packed dictionary (except for disable)
-	if ( ! master_dic.empty() && master_dic != "nospell" )
+	Log::out() << "Attaching speller for " << lang_iso639_1 << endl;
+	m_speller = gtkspell_new_attach((GtkTextView*)(Gtk::TextView::gobj()),
+				lang_iso639_1, &spell_error);
+
+	if ( m_speller != NULL )
 	{
-		string master_dic_name = m_lang + ".multi" ;
-		master_dic = Glib::build_filename(master_dic,master_dic_name) ;
-		if ( ! FileInfo(master_dic).exists() )
-		{
-			Log::out() << "Warning : spell dictionary not found : " << master_dic << endl ;
-			master_dic="";
-		}
-		else
-			Log::out() << "Spellerer found -> " << master_dic << endl ;
+		TRACE << " ... done in " << timspell.elapsed() << " secs." << endl;
 	}
-
-	// -- No packed dictionary: call default ones
-	if ( master_dic != "nospell" )
+	else
 	{
-		// attach spell checker
-		Glib::Timer timspell;
+		MSGOUT << "SPELLER ERROR = " << endl << spell_error << endl;
+		// Display message in merged view only (avoid 3x in stereo)
+		if (m_viewTrack==-1) {
+			string msg = _("Speller error : ") ;
+			if (spell_error)
+				msg += spell_error->message;
 
-//		const char* lang_iso639_1 = determineAspellLanguageCode(lang_iso639_2) ;
-		const char* lang_iso639_1 = determineAspellLanguageCode(m_lang) ;
-		if ( strcmp(lang_iso639_1, "")!=0 )
-		{
-			Log::out() << "Attaching speller  for " << lang_iso639_1  << " dict = " << master_dic << endl;
-			m_speller = gtkspell_new_attach((GtkTextView*)(Gtk::TextView::gobj()),
-						(master_dic.empty() ? NULL : master_dic.c_str()),
-						lang_iso639_1, &spell_error);
+			#ifdef __APPLE__
+			dlg::warning(msg, m_parent.getTopWindow());
+			#else
+			dlg::warning(msg);
+			#endif
 		}
-
-		getBuffer()->setSpeller(m_speller);
-
-		if ( m_speller != NULL )
-		{
-			// configure default behaviour of speller
-			gtkspell_allow_user_dictionnary(m_speller, (m_configuration["Speller,allow_user_dic"] == "true"));
-			gtkspell_allow_ignore_word(m_speller, (m_configuration["Speller,allow_ignore_word"] == "true"));
-			const string& elision_chars = m_configuration["Speller,elision_chars,"+lang_iso639_2];
-
-			//> set elision char
-			if ( !elision_chars.empty() )
-				gtkspell_set_elision_chars(m_speller, elision_chars.c_str());
-
-			//> set preprocessing callback
-			if (m_lang=="ara" )
-			{
-				InputLanguageArabic* il = (InputLanguageArabic*)InputLanguageHandler::get_input_language_by_shortcut("ara") ;
-				gtkspell_set_preproc_callback(m_speller, &ptr_callback, (void*)il) ;
-			}
-			else
-				gtkspell_set_preproc_callback(m_speller, NULL, NULL) ;
-
-			TRACE << " ... done in " << timspell.elapsed() << " secs." << endl;
-		}
-		else
-		{
-			MSGOUT << "SPELLER ERROR = " << endl << spell_error << endl;
-			//just display message in merged view
-			//for avoiding to display 3 times message in stereo case
-			if (m_viewTrack==-1) {
-				string msg = _("Speller error : ") ;
-				if (spell_error)
-					msg += spell_error->message;
-
-				#ifdef __APPLE__
-				dlg::warning(msg, m_parent.getTopWindow());
-				#else
-				dlg::warning(msg);
-				#endif
-			}
-		}
-		// comment following line coz this sometimes causes double-free corruption (stack address used internally ?)
-		//		if ( spell_error != NULL ) g_free(spell_error);
 	}
-
 }
-*/
+#endif
 
 /*
  *  Configure buffer
@@ -642,8 +584,9 @@ void AnnotationView::configure(string master_dic, string lang_iso639_2, const st
 	setBuffer() ;
 
 	//> Prepare speller
-/* SPELL */
-//	configureSpeller(master_dic, lang_iso639_2) ;
+#ifdef HAVE_GTKSPELL
+	configureSpeller(lang_iso639_2) ;
+#endif
 
 	//> Prepare internal values
 	m_lastEditTime = time(0);
@@ -1303,8 +1246,9 @@ void AnnotationView::updateView(const string& type, string id, DataModel::Update
 	// GLOBAL UPDATE
 	if ( globalUpdate )
 	{
-/* SPELL */
-//		inhibateSpellChecking(true);
+#ifdef HAVE_GTKSPELL
+		inhibateSpellChecking(true);
+#endif
 		setUndoableActions(false);
 
 		// TODO -> future versions : generalize decoration modes, not only for confidence.
@@ -1362,8 +1306,9 @@ void AnnotationView::updateView(const string& type, string id, DataModel::Update
  		m_pendingTextEdits = 0;
  		getBuffer()->set_modified(was_modified);
 
-/* SPELL */
-//		inhibateSpellChecking(false, true);
+#ifdef HAVE_GTKSPELL
+		inhibateSpellChecking(false, true);
+#endif
 		// <!> Massive updateView reset display by checking DataModel
 		//	   and re-inserting all elements. Therefore offsets and marks
 		//     can be modified what could provoke undo/redo stack corruption.
@@ -1374,8 +1319,9 @@ void AnnotationView::updateView(const string& type, string id, DataModel::Update
 	// LOCAL UPDATE
 	else if ( id != "" )
 	{
-/* SPELL */
-//		inhibateSpellChecking(true, false) ;
+#ifdef HAVE_GTKSPELL
+		inhibateSpellChecking(true, false) ;
+#endif
 
 		SignalSegment s;
 		if (TRACE_ON)
@@ -2990,18 +2936,34 @@ Glib::ustring AnnotationView::getSegmentText(const std::string& type, const std:
 /*
  * inhibate spell checking
  */
-/* SPELL */
-/*
+#ifdef HAVE_GTKSPELL
 void AnnotationView::inhibateSpellChecking(bool b, bool recheck)
 {
-	if ( m_speller != NULL ) {
-		gtkspell_inhibate_check(m_speller, b);
-		getBuffer()->setSpeller((b ? NULL: m_speller));
-		if (recheck)
-			gtkspell_recheck_all(m_speller);
+	if (b) {
+		// Inhibit: detach speller temporarily
+		if ( m_speller != NULL ) {
+			gtkspell_detach(m_speller);
+			// Keep m_speller non-NULL as a flag that we need to reattach
+		}
+	} else {
+		// Resume: reattach speller if it was inhibited
+		if ( m_speller != NULL ) {
+			GError *err = NULL;
+			// Detach already happened; reattach
+			GtkSpell* existing = gtkspell_get_from_text_view((GtkTextView*)(Gtk::TextView::gobj()));
+			if (!existing) {
+				const char* lang_iso639_1 = ISO639::get2LetterCode(m_lang.c_str());
+				if (lang_iso639_1 && strcmp(lang_iso639_1, "") != 0) {
+					m_speller = gtkspell_new_attach((GtkTextView*)(Gtk::TextView::gobj()),
+								lang_iso639_1, &err);
+				}
+			}
+			if (recheck && m_speller != NULL)
+				gtkspell_recheck_all(m_speller);
+		}
 	}
 }
-*/
+#endif
 
 /*
  * set pending edits indicator
@@ -4776,9 +4738,7 @@ void  AnnotationView::on_populate_popup(Gtk::Menu* menu)
 
 	menu->items().clear();
 
-/* SPELL */
-//	if ( m_speller != NULL )
-//		gtkspell_populate_popup(m_speller, this->gobj(), menu->gobj(), _("Spelling suggestions")) ;
+	// Stock gtkspell2 automatically adds spelling suggestions to right-click popup
 
 	get_pointer(winx, winy);
 	window_to_buffer_coords(Gtk::TEXT_WINDOW_TEXT, winx, winy, x, y);
@@ -5030,12 +4990,13 @@ void AnnotationView::insertPredefinedWord(Gtk::TextIter iter, string word)
 	getBuffer()->setCursor(iter);
 	getBuffer()->insertWord(word);
 }
-/* SPELL */
-//void AnnotationView::speller_recheck_all()
-//{
-//	if (m_speller)
-//		gtkspell_recheck_all(m_speller) ;
-//}
+#ifdef HAVE_GTKSPELL
+void AnnotationView::speller_recheck_all()
+{
+	if (m_speller)
+		gtkspell_recheck_all(m_speller) ;
+}
+#endif
 
 void AnnotationView::set_entityTag_bg(bool use_bg)
 {
@@ -5053,9 +5014,6 @@ void AnnotationView::set_entityTag_bg(bool use_bg)
 void AnnotationView::setWithConfidence(bool value, bool actualizeSpeller)
 {
 	m_withConfidence = value ;
-/* SPELL */
-//	if (actualizeSpeller)
-//		m_buffer->setSpellerConfidence(value) ;
 	Log::out() << "+++++++++++++++++ High confidence mode [" << value <<"]" << endl;
 }
 

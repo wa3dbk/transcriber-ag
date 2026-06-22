@@ -528,10 +528,12 @@ class AnnotationEditor : public AGEditor
 		 */
 		void reset_stopOnClick(bool stopOnClick) ;
 
+#ifdef HAVE_GTKSPELL
 		/**
 		 * Reloads the defined speller
 		 */
 		void reset_speller() ;
+#endif
 
 		/**
 		 * Modifies the time scale visibility
