@@ -39,6 +39,7 @@
 #include <iostream>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "quartz_threads.h"
 
 
 #define TAG_TOOLBAR_BUTTON_SIZE		20

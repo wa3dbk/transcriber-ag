@@ -3,12 +3,7 @@
 # ----------------------------------
 
 # --- Includes ---
-include_directories(
-	${LIVEMEDIA_INCLUDE_DIRS}
-	${GTKSPELL_INCLUDE_DIRS}
-	${SOUNDTOUCH_INCLUDE_DIRS}
-	${GTKMM_INCLUDE_DIRS}
-	${AGLIB_INCLUDE_DIRS}
+include_directories(BEFORE
 	${SRC}/Editors
 	${SRC}/MediaComponent
 	${SRC}
@@ -20,6 +15,13 @@ include_directories(
 	./Speaker
 	./Tools
 	./Tree
+)
+include_directories(
+	${LIVEMEDIA_INCLUDE_DIRS}
+	${GTKSPELL_INCLUDE_DIRS}
+	${SOUNDTOUCH_INCLUDE_DIRS}
+	${GTKMM_INCLUDE_DIRS}
+	${AGLIB_INCLUDE_DIRS}
 )
 
 

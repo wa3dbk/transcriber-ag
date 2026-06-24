@@ -60,6 +60,7 @@
 #include "Editors/AnnotationEditor/dialogs/annotation_dialogs.h"
 #include "Editors/AnnotationEditor/menus/annotation_menus.h"
 #include "Editors/AnnotationEditor/renderers/annotation_renderers.h"
+#include "quartz_threads.h"
 
 using namespace std;
 

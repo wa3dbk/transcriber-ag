@@ -102,6 +102,11 @@ sudo cp -R ../etc/TransAG /usr/local/etc/
 
  * Requires ffmpeg@4 specifically (ffmpeg 5+/6+ have additional API breaking changes)
  * Two harmless linker warnings about missing directories may appear
+ * **GDK threading deadlocks (fixed):** GTK2's `gdk_threads_enter/leave` mechanism deadlocks with the macOS Quartz backend. This has been fixed by disabling GDK thread locking on macOS via `quartz_threads.h` (Quartz serializes all GUI operations natively, making the lock unnecessary)
+ * **Plugin loading from build tree:** Format plugins (TransAG, TXT, etc.) are loaded from the build tree automatically when running without installing. If you see "Cannot load plugin" errors, the plugin loader searches `AG_PLUGINDIR` (default `/usr/local/lib/ag/`) and the build tree relative to the executable
+ * **Input method quirks:** The app detects SCIM as the input method environment by default. Arabic and other non-Latin keyboard layouts may behave differently than expected due to the custom `InputLanguageHandler` layer. This is a known upstream issue
+ * **pkg-config `bzip2` dependency:** On some macOS setups, `pkg-config` fails to resolve `gtkmm-2.4` because `freetype2.pc` lists `bzip2` as a private dependency and Homebrew's bzip2 is keg-only (not linked). The build system works around this with manual fallback include/library paths when `gtkmm-2.4` pkg-config resolution fails
+ * **MacPorts header conflicts:** If you have MacPorts packages installed (e.g. `irstlm`), their headers in `/opt/local/include/` may shadow project headers. The build system handles the known `Doc.h` conflict by prioritizing project include paths
 
 ### Windows
 
@@ -148,12 +153,23 @@ Start version is 2.0.0 version plus Debian patches.
     * Fixed `sed -i` incompatibility between GNU sed and macOS BSD sed in pot-update target
     * Fixed po files not being copied from source tree to build directory for `msgfmt`
     * French and Tibetan translations now build correctly on macOS
+ * **macOS GDK threading fix:**
+    * Disabled `gdk_threads_enter/leave/init` on macOS via `quartz_threads.h` force-included header
+    * Prevents deadlocks caused by GTK2's X11-style thread locking conflicting with the Quartz event loop
+    * Quartz natively serializes GUI operations, making the GDK lock unnecessary
+ * **macOS build system hardening:**
+    * Manual fallback for `GTKMM_INCLUDE_DIRS`/`GTKMM_LIBRARY_DIRS` when pkg-config fails (bzip2/freetype2 dependency chain)
+    * Added missing include paths: `freetype2`, `pixman-1`, `libpng16`, `fribidi`, `atkmm-1.6`
+    * Fixed include directory ordering to prevent MacPorts header shadowing (`Doc.h` conflict)
+ * **Plugin loading from build tree:**
+    * On macOS, the plugin loader now searches relative to the executable in the build tree
+    * Plugins are found automatically without `make install`
 
 ## TODO
 
  * ~~OSX compilation~~ (done - macOS Big Sur 11.x and newer)
  * ~~remove deprecated functions in ffmpeg~~ (done - migrated to FFmpeg 4.x API)
- * ~~remove deprecated functions in gthread and glib~~ (partially done - `g_thread_init` guarded; `gdk_threads_enter/leave` still used but deeply integrated)
+ * ~~remove deprecated functions in gthread and glib~~ (done - `g_thread_init` guarded for GLib >= 2.32; `gdk_threads_enter/leave` disabled on macOS Quartz via `quartz_threads.h`)
  * ~~update SoundTouch (1.4 -> 1.8)~~ (done - updated to 2.3.3)
  * ~~re-enable NLS on macOS~~ (done - fixed po file copy and macOS sed -i incompatibility)
  * ~~gtkspell integration~~ (done - stock gtkspell2 integration via `#ifdef HAVE_GTKSPELL`, auto-detected by pkg-config)

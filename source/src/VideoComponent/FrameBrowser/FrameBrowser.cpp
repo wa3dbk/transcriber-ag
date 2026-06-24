@@ -13,6 +13,7 @@
 #include "Common/FileInfo.h"
 #include "Common/icons/Icons.h"
 #include "Common/Dialogs.h"
+#include "quartz_threads.h"
 
 #define FRAMEBROWSER_PREVIEW_DEFAULTWIDTH			80
 #define FRAMEBROWSER_PREVIEW_DEFAULTHEIGHT			40

@@ -23,6 +23,7 @@
 
 #include "Common/globals.h"
 #include "Common/icons/Icons.h"
+#include "quartz_threads.h"
 
 using namespace tag ;
 

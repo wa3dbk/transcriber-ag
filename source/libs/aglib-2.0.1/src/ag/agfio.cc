@@ -16,6 +16,10 @@
   #include <shlwapi.h>
 #else
   #define DIR_SEPARATOR "/"
+  #ifdef __APPLE__
+    #include <mach-o/dyld.h>
+    #include <libgen.h>
+  #endif
 #endif
 /* -- BT Patch )) */ 
 
@@ -206,7 +210,44 @@ agfio::plug(const string& format)
       string plugin_dir(cCurrentPath);
       plugin_name = plugin_dir + DIR_SEPARATOR + plugin_name;
       #else
-	  plugin_name = AG_PLUGINDIR + plugin_name;
+      // Try AG_PLUGINDIR first (installed location)
+      string installed_path = string(AG_PLUGINDIR) + plugin_name;
+      if ( access(installed_path.c_str(), 0) == 0 ) {
+          plugin_name = installed_path;
+      }
+      #ifdef __APPLE__
+      // On macOS, also search relative to the executable (build tree)
+      else {
+          char exe_path[FILENAME_MAX];
+          uint32_t exe_size = sizeof(exe_path);
+          if (_NSGetExecutablePath(exe_path, &exe_size) == 0) {
+              char* exe_dir_c = dirname(exe_path);
+              string exe_dir(exe_dir_c);
+              // Search in ../Formats/*/ relative to executable
+              string formats_base = exe_dir + "/../Formats";
+              // Extract format name from plugin_name (agfio_plugin_FMT.dylib -> FMT)
+              string fmt = format;
+              string candidate = formats_base + "/" + fmt + "/" + plugin_name;
+              if ( access(candidate.c_str(), 0) == 0 ) {
+                  plugin_name = candidate;
+              } else {
+                  // Also try compat variant (e.g. TransAG_compat)
+                  candidate = formats_base + "/" + fmt + "_compat/" + plugin_name;
+                  if ( access(candidate.c_str(), 0) == 0 ) {
+                      plugin_name = candidate;
+                  } else {
+                      plugin_name = installed_path; // fall back
+                  }
+              }
+          } else {
+              plugin_name = installed_path;
+          }
+      }
+      #else
+      else {
+          plugin_name = installed_path;
+      }
+      #endif
 	  #endif
       cerr << " LOAD PLUGIN : " << plugin_name.c_str() << endl;
 	  plugin = dlopen(plugin_name.c_str(), RTLD_LAZY);

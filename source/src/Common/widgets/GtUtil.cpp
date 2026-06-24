@@ -12,6 +12,7 @@
 #include "Common/FileInfo.h"
 #include "Common/globals.h"
 #include "Common/util/Utils.h"
+#include "quartz_threads.h"
 
 
 namespace tag {

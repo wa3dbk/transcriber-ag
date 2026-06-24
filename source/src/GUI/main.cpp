@@ -31,6 +31,7 @@
 #include "Common/VersionInfo.h"
 #include "Common/util/Utils.h"
 #include "TranscriberAG-config.h"
+#include "quartz_threads.h"
 
 using namespace tag ;
 

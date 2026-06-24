@@ -27,6 +27,7 @@
 #include "Common/FileInfo.h"
 #include "Common/ColorsCfg.h"
 #include "Common/Explorer_filter.h"
+#include "quartz_threads.h"
 
 
 #define THREADS_ENTER if ( m_threads ) gdk_threads_enter();

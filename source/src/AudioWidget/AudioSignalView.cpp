@@ -20,6 +20,7 @@
 #include "Common/util/StringOps.h"
 #include "Common/util/FormatTime.h"
 #include "Common/widgets/GtUtil.h"
+#include "quartz_threads.h"
 
 static int CURSOR_UPD_PERIOD	= 25;	// 4O fps
 static int TEMPO_UPD_PERIOD		= 500;

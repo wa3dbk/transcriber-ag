@@ -17,6 +17,7 @@
 #include "Common/util/StringOps.h"
 #include "Common/util/Utils.h"
 #include "Common/widgets/GtUtil.h"
+#include "quartz_threads.h"
 
 namespace tag {
 

@@ -115,6 +115,7 @@ if(NOT MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif()
 
+
 find_package(FFMPEG	REQUIRED)
 
 # -- Global Includes --
@@ -243,6 +244,47 @@ if (APPLE)
 		set (BASE_DIR /usr/local)
 	endif()
 
+	# When pkg-config fails to resolve gtkmm-2.4 (e.g. missing bzip2.pc for
+	# freetype2), populate the variables manually so that subdirectory
+	# CMakeLists files that reference ${GTKMM_INCLUDE_DIRS} still work.
+	if (NOT GTKMM_FOUND)
+		message(STATUS "gtkmm-2.4 pkg-config failed – using manual fallback paths")
+		set(GTKMM_INCLUDE_DIRS
+			${BASE_DIR}/include/gtkmm-2.4
+			${BASE_DIR}/include/gdkmm-2.4
+			${BASE_DIR}/include/giomm-2.4
+			${BASE_DIR}/include/atkmm-1.6
+			${BASE_DIR}/include/pangomm-1.4
+			${BASE_DIR}/include/cairomm-1.0
+			${BASE_DIR}/include/sigc++-2.0
+			${BASE_DIR}/include/gtk-2.0
+			${BASE_DIR}/include/glib-2.0
+			${BASE_DIR}/include/gdk-pixbuf-2.0
+			${BASE_DIR}/include/atk-1.0
+			${BASE_DIR}/include/pango-1.0
+			${BASE_DIR}/include/cairo
+			${BASE_DIR}/include/harfbuzz
+			${BASE_DIR}/include/freetype2
+			${BASE_DIR}/include/pixman-1
+			${BASE_DIR}/include/libpng16
+			${BASE_DIR}/include/fribidi
+			${BASE_DIR}/lib/gtkmm-2.4/include
+			${BASE_DIR}/lib/gdkmm-2.4/include
+			${BASE_DIR}/lib/giomm-2.4/include
+			${BASE_DIR}/lib/pangomm-1.4/include
+			${BASE_DIR}/lib/atkmm-1.6/include
+			${BASE_DIR}/lib/cairomm-1.0/include
+			${BASE_DIR}/lib/gtk-2.0/include
+			${BASE_DIR}/lib/sigc++-2.0/include
+			${BASE_DIR}/lib/glib-2.0/include
+		)
+		set(GTKMM_LIBRARY_DIRS ${BASE_DIR}/lib)
+		set(GTKMM_LIBRARIES
+			gtkmm-2.4 gdkmm-2.4 atkmm-1.6 pangomm-1.4 cairomm-1.0
+			gtk-quartz-2.0 gdk-quartz-2.0 atk-1.0 pango-1.0 cairo sigc-2.0
+		)
+	endif()
+
 	# Use pkg-config include/link dirs when available (set by the UNIX block above),
 	# plus fallback paths for headers that pkg-config may miss on macOS.
 	include_directories(
@@ -261,12 +303,21 @@ if (APPLE)
 		${BASE_DIR}/include/atkmm-1.6
 		${BASE_DIR}/include/cairo
 		${BASE_DIR}/include/pango-1.0
+		${BASE_DIR}/include/harfbuzz
+		${BASE_DIR}/include/gdk-pixbuf-2.0
 		${BASE_DIR}/include/sigc++-2.0
+		${BASE_DIR}/include/freetype2
+		${BASE_DIR}/include/pixman-1
+		${BASE_DIR}/include/libpng16
+		${BASE_DIR}/include/fribidi
 
 		${BASE_DIR}/lib/gtkmm-2.4/include
 		${BASE_DIR}/lib/glibmm-2.4/include
 		${BASE_DIR}/lib/gdkmm-2.4/include
 		${BASE_DIR}/lib/giomm-2.4/include
+		${BASE_DIR}/lib/pangomm-1.4/include
+		${BASE_DIR}/lib/atkmm-1.6/include
+		${BASE_DIR}/lib/cairomm-1.0/include
 		${BASE_DIR}/lib/gtk-2.0/include
 		${BASE_DIR}/lib/sigc++-2.0/include
 		${BASE_DIR}/lib/glib-2.0/include

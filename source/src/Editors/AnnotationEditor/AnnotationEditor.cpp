@@ -55,6 +55,7 @@
 #include "VideoComponent/VideoPlayer/VideoWidget.h"
 #include "VideoComponent/FrameBrowser/FrameBrowser.h"
 #include "VideoComponent/VideoManager.h"
+#include "quartz_threads.h"
 
 #define NB_SEG_COLORS 4
 

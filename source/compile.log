@@ -1,0 +1,773 @@
+[0;32m[INFO][0m Removing existing build directory...
+[0;32m[INFO][0m Configuring build...
+CMake Deprecation Warning at CMakeLists.txt:6 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- The C compiler identification is AppleClang 13.0.0.13000029
+-- The CXX compiler identification is AppleClang 13.0.0.13000029
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found PkgConfig: /opt/local/bin/pkg-config (found version "0.29.2") 
+-- Looking for gettext
+-- Looking for gettext - not found
+-- Checking for module 'x11'
+--   Found x11, version 1.8.6
+-- Checking for module 'glibmm-2.4'
+--   Found glibmm-2.4, version 2.66.6
+-- Checking for module 'xerces-c'
+--   Found xerces-c, version 3.3.0
+-- Checking for module 'gtkmm-2.4'
+--   Package 'bzip2', required by 'freetype2', not found
+-- Checking for module 'gtkspell-2.0'
+--   No package 'gtkspell-2.0' found
+-- Checking for module 'sndfile'
+--   Found sndfile, version 1.2.2
+-- Checking for module 'portaudio-2.0'
+--   Found portaudio-2.0, version 19
+-- Checking for module 'libavcodec'
+--   Found libavcodec, version 58.134.100
+-- Checking for module 'libavformat'
+--   Found libavformat, version 58.76.100
+-- Checking for module 'libavutil'
+--   Found libavutil, version 56.70.100
+-- Checking for module 'libavdevice'
+--   Found libavdevice, version 58.13.100
+-- Checking for module 'libswscale'
+--   Found libswscale, version 5.9.100
+CMake Deprecation Warning at libs/CMakeLists.txt:1 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+CMake Deprecation Warning at libs/aglib-2.0.1/CMakeLists.txt:6 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Found ZLIB: /opt/local/lib/libz.dylib (found version "1.3.2") 
+CMake Deprecation Warning at libs/live555/CMakeLists.txt:6 (cmake_minimum_required):
+  Compatibility with CMake < 2.8.12 will be removed from a future version of
+  CMake.
+
+  Update the VERSION argument <min> value or use a ...<max> suffix to tell
+  CMake that the project does not need compatibility with older versions.
+
+
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/waadbk/git/myclone/transcriber-ag/source/build
+[0;32m[INFO][0m Building TranscriberAG...
+[  0%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/AG.cc.o
+[  0%] Building CXX object libs/live555/groupsock/CMakeFiles/groupsock.dir/GroupsockHelper.cpp.o
+[  0%] Building CXX object libs/live555/UsageEnvironment/CMakeFiles/UsageEnvironment.dir/UsageEnvironment.cpp.o
+[  0%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/Media.cpp.o
+[  0%] Building CXX object libs/live555/UsageEnvironment/CMakeFiles/UsageEnvironment.dir/HashTable.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:60:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    socketErr(env, "Failed to initialize 'winsock': ");
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:66:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    socketErr(env, "unable to create datagram socket: ");
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:72:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    socketErr(env, "setsockopt(SO_REUSEADDR) error: ");
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:83:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    socketErr(env, "setsockopt(SO_REUSEPORT) error: ");
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:93:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    socketErr(env, "setsockopt(IP_MULTICAST_LOOP) error: ");
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:128:22: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      socketErr(env, "error setting outgoing multicast interface: ");
+                     ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:153:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    socketErr(env, "Failed to initialize 'winsock': ");
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:159:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    socketErr(env, "unable to create stream socket: ");
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:165:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    socketErr(env, "setsockopt(SO_REUSEADDR) error: ");
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:209:22: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      socketErr(env, "failed to make non-blocking: ");
+                     ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:237:22: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      socketErr(env, "select() error: ");
+                     ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:242:22: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      socketErr(env, "select() error - !FD_ISSET");
+                     ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:293:22: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      socketErr(env, "recvfrom() error: ");
+                     ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:339:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+                                socketErr(env, "setsockopt(IP_MULTICAST_TTL) error: ");
+                                               ^
+[  1%] Building CXX object libs/live555/UsageEnvironment/CMakeFiles/UsageEnvironment.dir/strDup.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:366:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    socketErr(env, "getBufferSize() error: ");
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:439:22: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      socketErr(env, "setsockopt(IP_ADD_MEMBERSHIP) error: ");
+                     ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:507:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+    socketErr(env, "setsockopt(IP_ADD_SOURCE_MEMBERSHIP) error: ");
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/groupsock/GroupsockHelper.cpp:548:22: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      socketErr(env, "getsockname() error: ");
+                     ^
+[  1%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MediaSource.cpp.o
+[  1%] Linking CXX static library libUsageEnvironment.a
+[  1%] Built target UsageEnvironment
+[  1%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/AGAPI.cc.o
+[  1%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/FramedSource.cpp.o
+18 warnings generated.
+[  1%] Building CXX object libs/live555/groupsock/CMakeFiles/groupsock.dir/GroupEId.cpp.o
+[  1%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/FramedFileSource.cpp.o
+[  2%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/FramedFilter.cpp.o
+[  2%] Building C object libs/live555/groupsock/CMakeFiles/groupsock.dir/inet.c.o
+[  2%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/RTPSource.cpp.o
+[  3%] Building CXX object libs/live555/groupsock/CMakeFiles/groupsock.dir/Groupsock.cpp.o
+[  3%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MultiFramedRTPSource.cpp.o
+[  3%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/SimpleRTPSource.cpp.o
+[  3%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/H261VideoRTPSource.cpp.o
+[  4%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/H264VideoRTPSource.cpp.o
+[  4%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/QCELPAudioRTPSource.cpp.o
+[  4%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/AMRAudioRTPSource.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:43:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:77:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+[  4%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/JPEGVideoRTPSource.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:100:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:111:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:140:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:163:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:172:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:180:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:188:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:195:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:203:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:211:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:219:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:238:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:258:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:272:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:292:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:300:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+} 
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:308:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+} 
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:316:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:324:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:352:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:360:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:470:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:508:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:550:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:592:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:636:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:654:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:672:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:700:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:716:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:738:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:746:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:762:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:788:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:805:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:831:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:848:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:866:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:882:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:898:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:921:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:951:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:977:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:1005:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:1020:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:1043:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:1056:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:1072:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:1085:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/AGAPI.cc:1093:1: warning: non-void function does not return a value in all control paths [-Wreturn-type]
+}
+^
+[  4%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/ByteStreamFileSource.cpp.o
+[  4%] Building CXX object libs/live555/groupsock/CMakeFiles/groupsock.dir/NetInterface.cpp.o
+[  5%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/ByteStreamMultiFileSource.cpp.o
+[  5%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/BasicUDPSource.cpp.o
+[  5%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/DeviceSource.cpp.o
+[  5%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/AudioInputDevice.cpp.o
+[  5%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/WAVAudioFileSource.cpp.o
+[  5%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2Demux.cpp.o
+[  5%] Building CXX object libs/live555/BasicUsageEnvironment/CMakeFiles/BasicUsageEnvironment.dir/BasicUsageEnvironment0.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MPEG1or2Demux.cpp:164:9: warning: cast to 'void *' from smaller integer type 'u_int8_t' (aka 'unsigned char') [-Wint-to-void-pointer-cast]
+            << (void*)streamIdTag << " more than once!\n";
+               ^~~~~~~~~~~~~~~~~~
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MPEG1or2Demux.cpp:460:9: warning: cast to 'void *' from smaller integer type 'unsigned char' [-Wint-to-void-pointer-cast]
+                          << (void*)nextByte
+                             ^~~~~~~~~~~~~~~
+2 warnings generated.
+[  6%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2DemuxedElementaryStream.cpp.o
+[  6%] Building CXX object libs/live555/BasicUsageEnvironment/CMakeFiles/BasicUsageEnvironment.dir/BasicUsageEnvironment.cpp.o
+[  6%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEGVideoStreamFramer.cpp.o
+[  6%] Building CXX object libs/live555/BasicUsageEnvironment/CMakeFiles/BasicUsageEnvironment.dir/BasicTaskScheduler0.cpp.o
+[  6%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2VideoStreamFramer.cpp.o
+[  6%] Building CXX object libs/live555/BasicUsageEnvironment/CMakeFiles/BasicUsageEnvironment.dir/BasicTaskScheduler.cpp.o
+[  6%] Building CXX object libs/live555/groupsock/CMakeFiles/groupsock.dir/NetAddress.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MPEG1or2VideoStreamFramer.cpp:463:11: warning: cast to 'void *' from smaller integer type 'unsigned int' [-Wint-to-void-pointer-cast]
+                            << (void*)next4Bytes << "\n";
+                               ^~~~~~~~~~~~~~~~~
+1 warning generated.
+[  6%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2VideoStreamDiscreteFramer.cpp.o
+[  7%] Building CXX object libs/live555/BasicUsageEnvironment/CMakeFiles/BasicUsageEnvironment.dir/DelayQueue.cpp.o
+52 warnings generated.
+[  8%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/AGException.cc.o
+[  8%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG4VideoStreamFramer.cpp.o
+[  8%] Building CXX object libs/live555/BasicUsageEnvironment/CMakeFiles/BasicUsageEnvironment.dir/BasicHashTable.cpp.o
+[  8%] Linking CXX static library libBasicUsageEnvironment.a
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MPEG4VideoStreamFramer.cpp:646:12: warning: cast to 'void *' from smaller integer type 'u_int32_t' (aka 'unsigned int') [-Wint-to-void-pointer-cast]
+                             << (void*)next4Bytes << "\n";
+                                ^~~~~~~~~~~~~~~~~
+[  8%] Building CXX object libs/live555/groupsock/CMakeFiles/groupsock.dir/IOHandlers.cpp.o
+[  8%] Built target BasicUsageEnvironment
+[  8%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/AGSet.cc.o
+1 warning generated.
+[  9%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG4VideoStreamDiscreteFramer.cpp.o
+[  9%] Linking CXX static library libgroupsock.a
+[  9%] Built target groupsock
+[  9%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/Anchor.cc.o
+[  9%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/H264VideoStreamFramer.cpp.o
+[  9%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEGVideoStreamParser.cpp.o
+[  9%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2AudioStreamFramer.cpp.o
+[  9%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/AAFilter.cpp.o
+[  9%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2AudioRTPSource.cpp.o
+[ 10%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG4LATMAudioRTPSource.cpp.o
+[ 10%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG4ESVideoRTPSource.cpp.o
+[ 10%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG4GenericRTPSource.cpp.o
+[ 10%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3FileSource.cpp.o
+[ 10%] Building CXX object src/Common/CMakeFiles/CommonWidgets.dir/Dialogs.cpp.o
+[ 10%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/FIRFilter.cpp.o
+[ 10%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3HTTPSource.cpp.o
+[ 11%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3Transcoder.cpp.o
+[ 11%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3ADU.cpp.o
+[ 11%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3ADUdescriptor.cpp.o
+[ 11%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3ADUinterleaving.cpp.o
+[ 11%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3ADUTranscoder.cpp.o
+[ 11%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/FIFOSampleBuffer.cpp.o
+[ 11%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3StreamState.cpp.o
+[ 11%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/Annotation.cc.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MP3StreamState.cpp:201:21: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  char* getCmdFmt = "GET %s HTTP/1.1\r\nHost: %s:%d\r\n\r\n";
+                    ^
+1 warning generated.
+[ 12%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3Internals.cpp.o
+[ 12%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3InternalsHuffman.cpp.o
+[ 12%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3InternalsHuffmanTable.cpp.o
+[ 12%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3ADURTPSource.cpp.o
+[ 12%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2VideoRTPSource.cpp.o
+[ 12%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/mmx_optimized.cpp.o
+[ 13%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG2TransportStreamMultiplexor.cpp.o
+[ 13%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG2TransportStreamFromPESSource.cpp.o
+[ 13%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG2TransportStreamFromESSource.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/Annotation.cc:70:10: warning: returning address of local temporary object [-Wreturn-stack-address]
+  return getFeature(feature).c_str();
+         ^~~~~~~~~~~~~~~~~~~
+[ 13%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG2TransportStreamFramer.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MPEG2TransportStreamFramer.cpp:187:63: warning: cast to 'char *' from smaller integer type 'unsigned int' [-Wint-to-pointer-cast]
+  PIDStatus* pidStatus = (PIDStatus*)(fPIDStatusTable->Lookup((char*)pid));
+                                                              ^~~~~~~~~~
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MPEG2TransportStreamFramer.cpp:192:26: warning: cast to 'char *' from smaller integer type 'unsigned int' [-Wint-to-pointer-cast]
+    fPIDStatusTable->Add((char*)pid, pidStatus);
+                         ^~~~~~~~~~
+2 warnings generated.
+[ 13%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/ADTSAudioFileSource.cpp.o
+[ 14%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/H263plusVideoRTPSource.cpp.o
+[ 15%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/sse_optimized.cpp.o
+1 warning generated.
+[ 15%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/AnnotationIndex.cc.o
+[ 15%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/H263plusVideoStreamFramer.cpp.o
+[ 15%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/H263plusVideoStreamParser.cpp.o
+In file included from /Users/waadbk/git/myclone/transcriber-ag/source/src/Common/Dialogs.cpp:14:
+In file included from /Users/waadbk/git/myclone/transcriber-ag/source/src/Common/Dialogs.h:17:
+In file included from /usr/local/include/gtkmm-2.4/gtkmm.h:89:
+In file included from /usr/local/include/gdkmm-2.4/gdkmm.h:27:
+In file included from /usr/local/include/gdkmm-2.4/gdkmm/screen.h:36:
+In file included from /usr/local/include/cairomm-1.0/cairomm/fontoptions.h:24:
+In file included from /usr/local/include/cairomm-1.0/cairomm/enums.h:24:
+/usr/local/include/cairo/cairo-ft.h:46:10: fatal error: 'ft2build.h' file not found
+#include <ft2build.h>
+         ^~~~~~~~~~~~
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/H263plusVideoStreamParser.cpp:201:25: warning: format specifies type 'unsigned int' but the argument has type 'long' [-Wformat]
+         "h263reader:", bufferEnd - fTo + ADDITIONAL_BYTES_NEEDED);
+                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1 warning generated.
+[ 15%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/AC3AudioStreamFramer.cpp.o
+[ 15%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/AC3AudioRTPSource.cpp.o
+[ 15%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/JPEGVideoSource.cpp.o
+[ 15%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/RateTransposer.cpp.o
+[ 16%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/AMRAudioSource.cpp.o
+[ 16%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/AMRAudioFileSource.cpp.o
+[ 16%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/InputFile.cpp.o
+[ 16%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MediaSink.cpp.o
+[ 16%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/FileSink.cpp.o
+1 error generated.
+make[2]: *** [src/Common/CMakeFiles/CommonWidgets.dir/Dialogs.cpp.o] Error 1
+make[1]: *** [src/Common/CMakeFiles/CommonWidgets.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+[ 17%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/FeatureMap.cc.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/FileSink.cpp:96:31: warning: format specifies type 'unsigned long' but the argument has type '__darwin_suseconds_t' (aka 'int') [-Wformat]
+            presentationTime.tv_sec, presentationTime.tv_usec);
+                                     ^~~~~~~~~~~~~~~~~~~~~~~~
+1 warning generated.
+[ 18%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/BasicUDPSink.cpp.o
+[ 18%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/SoundTouch.cpp.o
+[ 18%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/AMRAudioFileSink.cpp.o
+[ 18%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/H264VideoFileSink.cpp.o
+[ 18%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/HTTPSink.cpp.o
+[ 18%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/RTPSink.cpp.o
+[ 19%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MultiFramedRTPSink.cpp.o
+[ 19%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/TDStretch.cpp.o
+[ 19%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/AudioRTPSink.cpp.o
+[ 19%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/Identifiers.cc.o
+[ 19%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/VideoRTPSink.cpp.o
+[ 19%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/RTPInterface.cpp.o
+[ 19%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2AudioRTPSink.cpp.o
+[ 19%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/cpu_detect_x86.cpp.o
+[ 19%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3ADURTPSink.cpp.o
+[ 20%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2VideoRTPSink.cpp.o
+[ 20%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/Metadata.cc.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MPEG1or2VideoRTPSink.cpp:124:11: warning: cast to 'void *' from smaller integer type 'unsigned int' [-Wint-to-void-pointer-cast]
+              << (void*)startCode << ", but we're not a fragment\n";
+                 ^~~~~~~~~~~~~~~~
+1 warning generated.
+[ 20%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2VideoHTTPSink.cpp.o
+[ 20%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG4LATMAudioRTPSink.cpp.o
+[ 20%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG4GenericRTPSink.cpp.o
+[ 21%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/BPMDetect.cpp.o
+[ 21%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG4ESVideoRTPSink.cpp.o
+[ 22%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/H263plusVideoRTPSink.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/H263plusVideoRTPSink.cpp:67:11: warning: cast to 'void *' from smaller integer type 'unsigned char' [-Wint-to-void-pointer-cast]
+              << (void*)(frameStart[0]) << "," << (void*)(frameStart[1]) << "\n";
+                 ^~~~~~~~~~~~~~~~~~~~~~
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/H263plusVideoRTPSink.cpp:67:44: warning: cast to 'void *' from smaller integer type 'unsigned char' [-Wint-to-void-pointer-cast]
+              << (void*)(frameStart[0]) << "," << (void*)(frameStart[1]) << "\n";
+                                                  ^~~~~~~~~~~~~~~~~~~~~~
+2 warnings generated.
+[ 22%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/H264VideoRTPSink.cpp.o
+[ 22%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/AC3AudioRTPSink.cpp.o
+[ 22%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/GSMAudioRTPSink.cpp.o
+[ 22%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/PeakFinder.cpp.o
+[ 22%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/JPEGVideoRTPSink.cpp.o
+[ 22%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/Paired.cc.o
+[ 22%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/InterpolateCubic.cpp.o
+[ 23%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/SimpleRTPSink.cpp.o
+[ 23%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/AMRAudioRTPSink.cpp.o
+[ 23%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/OutputFile.cpp.o
+[ 23%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/InterpolateLinear.cpp.o
+[ 23%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/uLawAudioFilter.cpp.o
+[ 23%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG2IndexFromTransportStream.cpp.o
+[ 23%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG2TransportStreamIndexFile.cpp.o
+[ 23%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/RE.cc.o
+[ 24%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG2TransportStreamTrickModeFilter.cpp.o
+[ 24%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/RTCP.cpp.o
+[ 24%] Building CXX object libs/soundtouch-2.3.3/source/SoundTouch/CMakeFiles/SoundTouch.dir/InterpolateShannon.cpp.o
+[ 24%] Building C object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/rtcp_from_spec.c.o
+[ 24%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/RTSPServer.cpp.o
+[ 24%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/RTSPOverHTTPServer.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPServer.cpp:300:16: warning: array index -3 is before the beginning of the array [-Warray-bounds]
+  fLastCRLF = &fRequestBuffer[-3]; // hack
+               ^              ~~
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/include/RTSPServer.hh:164:5: note: array 'fRequestBuffer' declared here
+    unsigned char fRequestBuffer[RTSP_BUFFER_SIZE];
+    ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPOverHTTPServer.cpp:256:16: warning: array index -3 is before the beginning of the array [-Warray-bounds]
+  fLastCRLF = &fRequestBuffer[-3]; // hack
+               ^              ~~
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/include/RTSPOverHTTPServer.hh:108:5: note: array 'fRequestBuffer' declared here
+    unsigned char fRequestBuffer[HTTP_BUFFER_SIZE];
+    ^
+1 warning generated.
+[ 24%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/Record.cc.o
+1 warning generated.
+[ 25%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/RTSPClient.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:194:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "DESCRIBE %s RTSP/1.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:543:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "OPTIONS %s RTSP/1.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:662:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "ANNOUNCE %s RTSP/1.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:849:22: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      transportFmt = "Transport: RAW/RAW/UDP%s%s%s=%d-%d\r\n";
+                     ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:857:22: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      transportFmt = "Transport: RTP/AVP%s%s%s=%d-%d\r\n";
+                     ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:896:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "%s"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:1076:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "PLAY %s RTSP/1.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:1177:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "PLAY %s%s%s RTSP/1.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:1269:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "PAUSE %s RTSP/1.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:1324:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "PAUSE %s%s%s RTSP/1.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:1384:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "RECORD %s%s%s RTSP/1.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:1444:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "SET_PARAMETER %s RTSP/1.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:1508:2: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+        "GET_PARAMETER %s RTSP/1.0\r\n"
+        ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:1536:2: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+        "GET_PARAMETER %s RTSP/1.0\r\n"
+        ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/RE.cc:42:39: warning: adding 'int' to a string does not append to the string [-Wstring-plus-int]
+    throw MatchError("regexec failed" + fail);
+                     ~~~~~~~~~~~~~~~~~^~~~~~
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/aglib-2.0.1/src/ag/RE.cc:42:39: note: use array indexing to silence this warning
+    throw MatchError("regexec failed" + fail);
+                                      ^
+                     &                [     ]
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:1680:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "TEARDOWN %s RTSP/1.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:1747:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "TEARDOWN %s%s%s RTSP/1.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:1963:2: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+        "Authorization: Digest username=\"%s\", realm=\"%s\", "
+        ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:1975:29: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      char* const authFmt = "Authorization: Basic %s\r\n";
+                            ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:2382:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "GET %s HTTP/1.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/RTSPClient.cpp:2432:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "POST %s HTTP/1.0\r\n"
+      ^
+1 warning generated.
+[ 25%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/RTSPCommon.cpp.o
+[ 25%] Linking CXX static library libSoundTouch.a
+/Library/Developer/CommandLineTools/usr/bin/ranlib: file: libSoundTouch.a(sse_optimized.cpp.o) has no symbols
+20 warnings generated.
+/Library/Developer/CommandLineTools/usr/bin/ranlib: file: libSoundTouch.a(sse_optimized.cpp.o) has no symbols
+[ 26%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/Signal.cc.o
+[ 26%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/SIPClient.cpp.o
+[ 26%] Built target SoundTouch
+[ 26%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/Timeline.cc.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/SIPClient.cpp:206:2: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+        "a=rtpmap:%u %s/8000\r\n";
+        ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/SIPClient.cpp:219:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "v=0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/SIPClient.cpp:244:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "INVITE %s SIP/2.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/SIPClient.cpp:639:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "ACK %s SIP/2.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/SIPClient.cpp:680:7: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+      "BYE %s SIP/2.0\r\n"
+      ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/SIPClient.cpp:860:27: warning: ISO C++11 does not allow conversion from string literal to 'char *const' [-Wwritable-strings]
+    char* const authFmt = "Proxy-Authorization: Digest username=\"%s\", realm=\"%s\", nonce=\"%s\", response=\"%s\", uri=\"%s\"\r\n";
+                          ^
+6 warnings generated.
+[ 26%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MediaSession.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:150:22: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      protocolName = "RTP";
+                     ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:159:22: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      protocolName = "UDP";
+                     ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:432:19: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 0: {temp = "PCMU"; freq = 8000; nCh = 1; break;}
+                  ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:433:19: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 2: {temp = "G726-32"; freq = 8000; nCh = 1; break;}
+                  ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:434:19: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 3: {temp = "GSM"; freq = 8000; nCh = 1; break;}
+                  ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:435:19: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 4: {temp = "G723"; freq = 8000; nCh = 1; break;}
+                  ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:436:19: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 5: {temp = "DVI4"; freq = 8000; nCh = 1; break;}
+                  ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:437:19: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 6: {temp = "DVI4"; freq = 16000; nCh = 1; break;}
+                  ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:438:19: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 7: {temp = "LPC"; freq = 8000; nCh = 1; break;}
+                  ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:439:19: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 8: {temp = "PCMA"; freq = 8000; nCh = 1; break;}
+                  ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:440:19: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 9: {temp = "G722"; freq = 8000; nCh = 1; break;}
+                  ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:441:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 10: {temp = "L16"; freq = 44100; nCh = 2; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:442:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 11: {temp = "L16"; freq = 44100; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:443:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 12: {temp = "QCELP"; freq = 8000; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:444:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 14: {temp = "MPA"; freq = 90000; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:446:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 15: {temp = "G728"; freq = 8000; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:447:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 16: {temp = "DVI4"; freq = 11025; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:448:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 17: {temp = "DVI4"; freq = 22050; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:449:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 18: {temp = "G729"; freq = 8000; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:450:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 25: {temp = "CELB"; freq = 90000; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:451:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 26: {temp = "JPEG"; freq = 90000; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:452:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 28: {temp = "NV"; freq = 90000; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:453:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 31: {temp = "H261"; freq = 90000; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:454:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 32: {temp = "MPV"; freq = 90000; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:455:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 33: {temp = "MP2T"; freq = 90000; nCh = 1; break;}
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MediaSession.cpp:456:20: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+  case 34: {temp = "H263"; freq = 90000; nCh = 1; break;}
+                   ^
+26 warnings generated.
+[ 26%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/ServerMediaSession.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/ServerMediaSession.cpp:263:28: warning: format specifies type 'long' but the argument has type '__darwin_suseconds_t' (aka 'int') [-Wformat]
+            fCreationTime.tv_sec, fCreationTime.tv_usec, // o= <session id>
+                                  ^~~~~~~~~~~~~~~~~~~~~
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/ServerMediaSession.cpp:236:15: note: format string is defined here
+      "o=- %ld%06ld %d IN IP4 %s\r\n"
+              ^~~~~
+              %06d
+1 warning generated.
+[ 27%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/PassiveServerMediaSubsession.cpp.o
+[ 27%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/OnDemandServerMediaSubsession.cpp.o
+[ 27%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/Utilities.cc.o
+[ 27%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/FileServerMediaSubsession.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/OnDemandServerMediaSubsession.cpp:245:31: warning: cast to 'const char *' from smaller integer type 'unsigned int' [-Wint-to-pointer-cast]
+  fDestinationsHashTable->Add((char const*)clientSessionId, destinations);
+                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/OnDemandServerMediaSubsession.cpp:256:54: warning: cast to 'const char *' from smaller integer type 'unsigned int' [-Wint-to-pointer-cast]
+    = (Destinations*)(fDestinationsHashTable->Lookup((char const*)clientSessionId));
+                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/OnDemandServerMediaSubsession.cpp:307:54: warning: cast to 'const char *' from smaller integer type 'unsigned int' [-Wint-to-pointer-cast]
+    = (Destinations*)(fDestinationsHashTable->Lookup((char const*)clientSessionId));
+                                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/OnDemandServerMediaSubsession.cpp:309:36: warning: cast to 'const char *' from smaller integer type 'unsigned int' [-Wint-to-pointer-cast]
+    fDestinationsHashTable->Remove((char const*)clientSessionId);
+                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+4 warnings generated.
+[ 27%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/Validation.cc.o
+[ 27%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG4VideoFileServerMediaSubsession.cpp.o
+[ 27%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/H263plusVideoFileServerMediaSubsession.cpp.o
+[ 27%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/WAVAudioFileServerMediaSubsession.cpp.o
+[ 27%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/agfio.cc.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/WAVAudioFileServerMediaSubsession.cpp:139:15: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+          mimeType = "PCMU";
+                     ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/WAVAudioFileServerMediaSubsession.cpp:146:15: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+          mimeType = "L16";
+                     ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/WAVAudioFileServerMediaSubsession.cpp:156:13: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+        mimeType = "L8";
+                   ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/WAVAudioFileServerMediaSubsession.cpp:160:18: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      mimeType = "PCMU";
+                 ^
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/WAVAudioFileServerMediaSubsession.cpp:167:18: warning: ISO C++11 does not allow conversion from string literal to 'char *' [-Wwritable-strings]
+      mimeType = "PCMA";
+                 ^
+5 warnings generated.
+[ 28%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/AMRAudioFileServerMediaSubsession.cpp.o
+[ 28%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MP3AudioFileServerMediaSubsession.cpp.o
+[ 28%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2VideoFileServerMediaSubsession.cpp.o
+[ 28%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2FileServerDemux.cpp.o
+[ 29%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/agfioError.cc.o
+[ 29%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG1or2DemuxedServerMediaSubsession.cpp.o
+[ 30%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/MPEG2TransportFileServerMediaSubsession.cpp.o
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MPEG2TransportFileServerMediaSubsession.cpp:213:36: warning: cast to 'const char *' from smaller integer type 'unsigned int' [-Wint-to-pointer-cast]
+      fClientSessionHashTable->Add((char const*)clientSessionId, client);
+                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/waadbk/git/myclone/transcriber-ag/source/libs/live555/liveMedia/MPEG2TransportFileServerMediaSubsession.cpp:247:66: warning: cast to 'const char *' from smaller integer type 'unsigned int' [-Wint-to-pointer-cast]
+  return (ClientTrickPlayState*)(fClientSessionHashTable->Lookup((char const*)clientSessionId));
+                                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2 warnings generated.
+[ 30%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/ADTSAudioFileServerMediaSubsession.cpp.o
+[ 30%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/QuickTimeFileSink.cpp.o
+[ 30%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/QuickTimeGenericRTPSource.cpp.o
+[ 30%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/DarwinInjector.cpp.o
+[ 31%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/AVIFileSink.cpp.o
+[ 31%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/agfio_plugin.cc.o
+[ 31%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/tree_kernel.cc.o
+[ 31%] Building CXX object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/tree_others.cc.o
+[ 31%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/BitVector.cpp.o
+[ 31%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/StreamParser.cpp.o
+[ 31%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/DigestAuthentication.cpp.o
+[ 31%] Building C object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/our_md5.c.o
+[ 31%] Building C object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/our_md5hl.c.o
+[ 32%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/Base64.cpp.o
+[ 32%] Building CXX object libs/live555/liveMedia/CMakeFiles/liveMedia.dir/Locale.cpp.o
+[ 32%] Linking CXX static library libliveMedia.a
+[ 32%] Built target liveMedia
+[ 32%] Building C object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/regcomp.c.o
+[ 33%] Building C object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/regerror.c.o
+[ 33%] Building C object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/regexec.c.o
+[ 33%] Building C object libs/aglib-2.0.1/src/ag/CMakeFiles/ag.dir/regfree.c.o
+[ 33%] Linking CXX shared library libag.dylib
+[ 33%] Built target ag
+make: *** [all] Error 2
