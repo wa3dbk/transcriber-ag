@@ -1166,7 +1166,11 @@ void AnnotationEditor::initializeView(bool newTranscription, bool recovered)
 	m_activeViewMode = -3; // to force update view
 
 	// set focus on new annotation view
+#ifdef __APPLE__
+	Glib::signal_timeout().connect(sigc::mem_fun(*this, &AnnotationEditor::setFocusWhenIdle), 50);
+#else
 	Glib::signal_idle().connect(sigc::mem_fun(*this, &AnnotationEditor::setFocusWhenIdle));
+#endif
 
 	// switch interline height regarding transcription language
 	changeInterline();
@@ -1990,7 +1994,11 @@ void AnnotationEditor::onFileAction(const string& action)
 	{
 		setWaitCursor(true);
 		// after idle to force cursor update
+#ifdef __APPLE__
+		Glib::signal_timeout().connect(sigc::mem_fun(this, &AnnotationEditor::refreshWhenIdle), 50);
+#else
 		Glib::signal_idle().connect(sigc::mem_fun(this, &AnnotationEditor::refreshWhenIdle), 20);
+#endif
 	}
 	//> Export file to another format
 	else if (action == "export")
@@ -3908,7 +3916,14 @@ void AnnotationEditor::showSegmentTracks(const string& type, int p_notrack, bool
 		if (afterLoading)
 		{
 			m_nbThread++;
+#ifdef __APPLE__
+			// On macOS Quartz, idle callbacks are starved by the Cocoa
+			// run loop after heavy widget operations.  Use a short
+			// timeout instead so the callback actually fires.
+			Glib::signal_timeout().connect(sigc::bind<int>(sigc::mem_fun(*this, &AnnotationEditor::showLabelTracksAfterIdle), notrack), 50);
+#else
 			Glib::signal_idle().connect(sigc::bind<int>(sigc::mem_fun(*this, &AnnotationEditor::showLabelTracksAfterIdle), notrack));
+#endif
 		}
 	}
 

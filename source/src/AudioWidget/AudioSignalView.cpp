@@ -2870,7 +2870,11 @@ bool AudioSignalView::onExpandClicked(GdkEventButton* event)
 	}
 
 	a_expanded = !a_expanded;
+#ifdef __APPLE__
+	Glib::signal_timeout().connect(sigc::mem_fun(this, &AudioSignalView::updateInfos2), 50);
+#else
 	Glib::signal_idle().connect(sigc::mem_fun(this, &AudioSignalView::updateInfos2));
+#endif
 	return false ;
 }
 

@@ -3049,7 +3049,11 @@ bool GuiWidget::keyPressEvent4Tree(const string& action)
 void GuiWidget::on_map()
 {
 	Gtk::Widget::on_map() ;
+#ifdef __APPLE__
+	Glib::signal_timeout().connect(sigc::mem_fun(this, &GuiWidget::postDisplayProcessAfterIdle), 50);
+#else
 	Glib::signal_idle().connect(sigc::mem_fun(this, &GuiWidget::postDisplayProcessAfterIdle)) ; // after idle to force cursor update
+#endif
 }
 
 bool GuiWidget::postDisplayProcessAfterIdle()

@@ -178,7 +178,11 @@ void ComboEntry_mod::my_insert_text(const Glib::ustring& text)
 
 void ComboEntry_mod::externalIMEcontrol(bool activate)
 {
+#ifdef __APPLE__
+	Glib::signal_timeout().connect(sigc::bind<bool>(sigc::mem_fun(*this, &ComboEntry_mod::externalIMEcontrol_afterIdle), activate), 50);
+#else
 	Glib::signal_idle().connect(sigc::bind<bool>(sigc::mem_fun(*this, &ComboEntry_mod::externalIMEcontrol_afterIdle), activate)) ;
+#endif
 }
 
 bool ComboEntry_mod::externalIMEcontrol_afterIdle(bool activate)

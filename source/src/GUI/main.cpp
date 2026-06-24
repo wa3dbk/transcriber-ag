@@ -540,6 +540,26 @@ int main(int argc, char *argv[])
 #if !GLIB_CHECK_VERSION(2,32,0)
 	g_thread_init(NULL);
 #endif
+
+#ifdef __APPLE__
+	/*
+	 * On macOS Quartz, gdk_threads_init() must be called so that GDK's
+	 * internal event dispatch state is initialized — without it the Quartz
+	 * backend fails to deliver user events (mouse, keyboard).
+	 *
+	 * However the default GDK mutex causes deadlocks when callbacks try to
+	 * re-acquire it.  Setting no-op lock functions before init gives us the
+	 * initialization without the locking.  Application-level
+	 * gdk_threads_enter/leave calls are additionally no-op'd via macros in
+	 * quartz_threads.h.
+	 */
+	{
+		static GCallback noop_fn = (GCallback) +[]() {};
+		gdk_threads_set_lock_functions(
+			(void(*)(void))noop_fn,
+			(void(*)(void))noop_fn);
+	}
+#endif
 	gdk_threads_init();
 
 	//> -- Compute ICONS BASE

@@ -681,7 +681,11 @@ void AnnotationView::setTag(const string& tagname, const string& type, const str
 		if ( with_scroll ) {
 			Gtk::TextIter scrollpos = pos;
 			scrollpos.forward_to_line_end();
-			Glib::signal_idle().connect(sigc::bind<guint32>(sigc::mem_fun(*this, &AnnotationView::scrollView), scrollpos.get_offset()));
+#ifdef __APPLE__
+				Glib::signal_timeout().connect(sigc::bind<guint32>(sigc::mem_fun(*this, &AnnotationView::scrollView), scrollpos.get_offset()), 50);
+#else
+				Glib::signal_idle().connect(sigc::bind<guint32>(sigc::mem_fun(*this, &AnnotationView::scrollView), scrollpos.get_offset()));
+#endif
 		}
 		getBuffer()->setTag(tagname, type, pos, track, applied_start, applied_stop);
 	}
@@ -1571,9 +1575,15 @@ void AnnotationView::updateView(const string& type, string id, DataModel::Update
 					// if subtype is other, auto-popup for allowing modification
 					if ( subtype == QualifiersMenu::OTHER_CHOICE )
 					{
+#ifdef __APPLE__
+						Glib::signal_timeout().connect(sigc::bind<Gtk::TextIter, string>(
+									sigc::mem_fun(*this, &AnnotationView::editAnnotationPropertiesWhenIdle),
+									getBuffer()->getTaggedElementIter(id), type), 50);
+#else
 						Glib::signal_idle().connect(sigc::bind<Gtk::TextIter, string>(
 									sigc::mem_fun(*this, &AnnotationView::editAnnotationPropertiesWhenIdle),
 									getBuffer()->getTaggedElementIter(id), type));
+#endif
 					}
 				}
 				// ICI
@@ -1641,7 +1651,11 @@ void AnnotationView::updateView(const string& type, string id, DataModel::Update
 //	if ( upd = DataModel::INSERTED ) {
 //		TRACE << " OUT updateView cursor pos = " << iter << " is editable=" << iter.editable() << endl;
 //	}
+#ifdef __APPLE__
+	Glib::signal_timeout().connect(sigc::bind<guint>(sigc::mem_fun(*this, &AnnotationView::scrollViewWhenIdle), iter.get_offset()), 50);
+#else
 	Glib::signal_idle().connect(sigc::bind<guint>(sigc::mem_fun(*this, &AnnotationView::scrollViewWhenIdle), iter.get_offset()));
+#endif
 
 	inhibateSynchro(false) ;
 
@@ -2986,7 +3000,11 @@ void AnnotationView::setHasPendingEdits(const Gtk::TextIter& pos, int nbbytes)
 		else
 			m_pendingTextEdits = MAX_PENDING;
 		if ( m_pendingTextEdits >= MAX_PENDING )
+#ifdef __APPLE__
+			Glib::signal_timeout().connect(sigc::mem_fun(*this, &AnnotationView::storePendingTextEditsWhenIdle), 50);
+#else
 			Glib::signal_idle().connect(sigc::mem_fun(*this, &AnnotationView::storePendingTextEditsWhenIdle));
+#endif
 	}
 }
 
@@ -3596,10 +3614,18 @@ bool AnnotationView::bufferTagEventHandler(const string& tagclass, GdkEvent* eve
 			{
 				//> Launch speaker dictionary if double click on turn
 				if ( tagclass.compare("turn")==0 )
+#ifdef __APPLE__
+					Glib::signal_timeout().connect(sigc::bind<Gtk::TextIter>(sigc::mem_fun(*this, &AnnotationView::editSpeakerPropertiesWhenIdle), iter), 50);
+#else
 					Glib::signal_idle().connect(sigc::bind<Gtk::TextIter>(sigc::mem_fun(*this, &AnnotationView::editSpeakerPropertiesWhenIdle), iter));
+#endif
 				//> otherwise launch appropriated dialog
 				else
+#ifdef __APPLE__
+					Glib::signal_timeout().connect(sigc::bind<Gtk::TextIter, string>(sigc::mem_fun(*this, &AnnotationView::editAnnotationPropertiesWhenIdle), iter, tagclass), 50);
+#else
 					Glib::signal_idle().connect(sigc::bind<Gtk::TextIter, string>(sigc::mem_fun(*this, &AnnotationView::editAnnotationPropertiesWhenIdle), iter, tagclass));
+#endif
 				handled = true ;
 			}
 			break ;
@@ -3999,7 +4025,11 @@ bool AnnotationView::processKeyFunc(GdkEventKey* event, bool& ret)
 		if ( do_adjust )
 		{
 			ret = Gtk::TextView::on_key_press_event(event);
+#ifdef __APPLE__
+			Glib::signal_timeout().connect(sigc::bind<bool, bool>(sigc::mem_fun(*this, &AnnotationView::adjustCursorWhenIdle), forward, downward), 50);
+#else
 			Glib::signal_idle().connect(sigc::bind<bool, bool>(sigc::mem_fun(*this, &AnnotationView::adjustCursorWhenIdle), forward, downward));
+#endif
 		}
 	}
 	// process any other function key -> standard textview behaviour
@@ -4972,7 +5002,11 @@ void AnnotationView::onUndoAllDone()
 
 void AnnotationView::externalIMEcontrol(bool activate)
 {
+#ifdef __APPLE__
+	Glib::signal_timeout().connect(sigc::bind<bool>(sigc::mem_fun(*this, &AnnotationView::externalIMEcontrol_afterIdle), activate), 50);
+#else
 	Glib::signal_idle().connect(sigc::bind<bool>(sigc::mem_fun(*this, &AnnotationView::externalIMEcontrol_afterIdle), activate)) ;
+#endif
 }
 
 bool AnnotationView::externalIMEcontrol_afterIdle(bool activate)

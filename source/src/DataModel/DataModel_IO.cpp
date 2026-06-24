@@ -81,8 +81,8 @@ bool DataModel::loadFromFile(const string& path, const string& format, bool full
 
 	// also pass current object adress to loader
 	// coz some loaders may directly fill in a DataModel
-	char addr [10];
-	sprintf(addr, "%lx", (unsigned long)this);
+	char addr [20];
+	snprintf(addr, sizeof(addr), "%lx", (unsigned long)this);
 	addAGOption("&datamodel", addr); // -> will store data in current model
 	addAGOption("fullmode", (fullmode ? "true" : "false")); // -> will store data in current model
 	string default_id = format;
@@ -104,8 +104,8 @@ bool DataModel::loadFromFile(const string& path, const string& format, bool full
 
 	if (m_qualifierMapping != NULL)
 	{
-		char mapp [10];
-		sprintf(mapp, "%lx", (unsigned long)m_qualifierMapping);
+		char mapp [20];
+		snprintf(mapp, sizeof(mapp), "%lx", (unsigned long)m_qualifierMapping);
 		addAGOption("&qualifierMapping", mapp);
 
 		import_convention = getConversionConventionFile(format, m_qualifierMapping) ;
@@ -531,8 +531,8 @@ void DataModel::saveToFileWithOptions(const std::map<string,string>& options, co
 	}
 
 	setAGOptions(format, true);
-	char addr [10];
-	sprintf(addr, "%lx", (unsigned long)this);
+	char addr [20];
+	snprintf(addr, sizeof(addr), "%lx", (unsigned long)this);
 	addAGOption("&datamodel", addr); // -> will store data in current model
 
 	try {
