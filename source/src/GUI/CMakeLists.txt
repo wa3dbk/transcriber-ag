@@ -85,7 +85,11 @@ if (WIN32 AND NOT MINGW)
 endif(WIN32 AND NOT MINGW)
 
 if(APPLE)
-	set(APPLE_LINKS "-framework CoreServices")
+	set(APPLE_LINKS "-framework CoreServices" "-framework Cocoa")
+	# Compile the Objective-C activation helper as a static object
+	add_library(mac_activate OBJECT mac_activate.m)
+	set_source_files_properties(mac_activate.m PROPERTIES LANGUAGE C)
+	target_compile_options(mac_activate PRIVATE "-x" "objective-c")
 endif(APPLE)
 
 
@@ -97,6 +101,7 @@ add_executable(
 	# --- Sources ---
 	GuiWidget.cpp
 	main.cpp
+	$<$<BOOL:${APPLE}>:$<TARGET_OBJECTS:mac_activate>>
 	${APP_ICON_OBJ}
 )
 

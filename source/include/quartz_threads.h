@@ -5,23 +5,22 @@
  * The GDK thread lock (gdk_threads_enter/leave) is unnecessary and causes
  * deadlocks when called from background threads.
  *
- * gdk_threads_init() is NOT disabled here — it must run so that GDK's
- * internal event dispatch state is properly initialized (the Quartz backend
- * needs it to dispatch user events).  Instead, main() calls
- * gdk_threads_set_lock_functions() with no-op callbacks before
- * gdk_threads_init(), so all actual locking is harmless.
- *
- * Application-level gdk_threads_enter/leave calls are still no-op'd via
- * these macros to prevent re-entrant lock acquisition in callbacks.
+ * gdk_threads_init() must also be disabled: when it runs, it sets an
+ * internal gdk_threads_enabled flag that changes the Quartz event loop's
+ * dispatch path.  With that flag set, the Quartz backend stops delivering
+ * events after heavy widget operations (e.g. loading a file with waveform
+ * and annotation views).  Event delivery on macOS is handled by
+ * mac_activate_app() ([NSApp finishLaunching]) instead.
  *
  * Include this header AFTER any GDK/GTK headers in source files that call
- * gdk_threads_enter() or gdk_threads_leave().
+ * gdk_threads_enter(), gdk_threads_leave(), or gdk_threads_init().
  */
 
 #ifndef _QUARTZ_THREADS_H
 #define _QUARTZ_THREADS_H
 
 #ifdef __APPLE__
+  #define gdk_threads_init()   ((void)0)
   #define gdk_threads_enter()  ((void)0)
   #define gdk_threads_leave()  ((void)0)
 #endif

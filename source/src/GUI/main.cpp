@@ -33,6 +33,12 @@
 #include "TranscriberAG-config.h"
 #include "quartz_threads.h"
 
+#ifdef __APPLE__
+extern "C" void mac_activate_app(void);
+extern "C" void mac_pump_events(void);
+extern "C" void mac_ensure_key_window(void);
+#endif
+
 using namespace tag ;
 
 int main(int argc, char *argv[])
@@ -541,25 +547,6 @@ int main(int argc, char *argv[])
 	g_thread_init(NULL);
 #endif
 
-#ifdef __APPLE__
-	/*
-	 * On macOS Quartz, gdk_threads_init() must be called so that GDK's
-	 * internal event dispatch state is initialized — without it the Quartz
-	 * backend fails to deliver user events (mouse, keyboard).
-	 *
-	 * However the default GDK mutex causes deadlocks when callbacks try to
-	 * re-acquire it.  Setting no-op lock functions before init gives us the
-	 * initialization without the locking.  Application-level
-	 * gdk_threads_enter/leave calls are additionally no-op'd via macros in
-	 * quartz_threads.h.
-	 */
-	{
-		static GCallback noop_fn = (GCallback) +[]() {};
-		gdk_threads_set_lock_functions(
-			(void(*)(void))noop_fn,
-			(void(*)(void))noop_fn);
-	}
-#endif
 	gdk_threads_init();
 
 	//> -- Compute ICONS BASE
@@ -672,6 +659,21 @@ int main(int argc, char *argv[])
 
 		window = new GuiWidget(&local_parameters, parser) ;
 	}
+
+#ifdef __APPLE__
+	mac_activate_app();
+
+	/*
+	 * Periodic maintenance for the macOS Quartz backend:
+	 * 1. Ensure the main window stays key after modal dialogs
+	 * 2. Pump Cocoa events that GDK's Quartz poll_func misses on Big Sur+
+	 */
+	Glib::signal_timeout().connect([]() -> bool {
+		mac_ensure_key_window();
+		mac_pump_events();
+		return true;
+	}, 50);
+#endif
 
 	gdk_threads_enter() ;
 	kit->run(*window) ;
